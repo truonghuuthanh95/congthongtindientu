@@ -1,0 +1,257 @@
+﻿@model CongThongTinDienTu.Models.DAO.School
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Hợp đổng mẫu</title>
+    <link rel="shortcut icon" href="~/Content/Images/logo_so.png">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body style="background-color: white; padding-top: 40px;">
+    <div class="text-center">
+        <a href="/thongtintruong/@Model.MaTruong" role="button" class="btn btn-primary">
+            <span class="fa fa-cogs"></span> CẬP NHẬT LẠI THÔNG TIN HỢP ĐỒNG
+        </a>
+        <button class="btn btn-warning" onclick="printContract()">IN HỢP ĐỒNG  <span class="fa fa-print fa-large"></span></button>
+        <p class="text-danger"><i>(Lưu ý in hợp đồng thành 2 bản)</i></p>
+    </div>
+    <div class="contract col-sm-10 col-sm-offset-1" id="contract-to-print" style="padding-top: 30px">
+        <div class="row">
+            <div class="col-sm-5 col-xs-5 text-center">
+                <p class="text-uppercase">
+                    sở giáo dục và đào tạo &ensp; thành phố hồ chí minh
+                </p>
+                <p class="text-uppercase">
+                    <b>trung tâm thông tin và chương trình giáo dục</b><br />
+                    _____________
+                </p>               
+                <p>Số:&emsp;&emsp;&emsp;/HD-TTTT</p>
+            </div>
+            <div class="col-sm-7 col-xs-7 text-center">
+                <p class="text-uppercase"><b>cộng hòa xã hội chủ nghĩa việt nam</b></p>
+                <p>Độc lập - Tự do - Hạnh phúc</p>
+                <p>__________</p>
+            </div>
+        </div>
+        <p class="text-center">
+            <b>HỢP ĐỒNG</b><br />
+            <b>Về tạo lập Cổng thông tin điện tử</b>
+        </p>
+        <p>
+            &emsp;&emsp; Hôm nay, ngày &ensp; tháng &ensp; năm @DateTime.Now.Year<br />
+            Chúng tôi gồm:
+        </p>
+        <table>
+            <tr>
+                <td style="width: 100px"><b>BÊN A</b></td>
+                <td>
+                    <b>
+                        TRUNG TÂM THÔNG TIN VÀ CHƯƠNG TRÌNH GIÁO DỤC
+                        THUỘC SỞ GIÁO DỤC VÀ ĐÀO TẠO TP. HỒ CHÍ MINH
+                    </b> <br />(sau đây gọi tắt là Bên A)
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">Địa chỉ</td>
+                <td>66 - 68 Đường Lê Thánh Tôn, Phường Bến Nghé, Quận 1, TP. HCM </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">Số điện thoại: </td>
+                <td>3.829.18.75 &emsp;&emsp; Email: tttt_ctgd@hcm.edu.vn</td>
+            </tr>
+            <tr>
+                <td style="width: 100px">Ðại diện</td>
+                <td><b>Ông Nguyễn Hồng Tuấn</b> &emsp; Chức vụ: Phó Giám đốc</td>
+            </tr>
+            <tr>
+                <td style="width: 100px">Mã số thuế</td>
+                <td>0304994554</td>
+            </tr>
+            <tr>
+                <td style="width: 100px"><b>BÊN B</b></td>
+                <td>
+                    <b class="text-uppercase">
+                        @Model.TenTruong
+                    </b> <br />(sau đây gọi tắt là Bên B)
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">Địa chỉ</td>
+                <td>@Model.SoNhaTenDuong, @Model.Ward.Type @Model.Ward.Name, @Model.Ward.District.Type @Model.Ward.District.Name, TP. HCM </td>
+            </tr>
+            <tr>
+                <td style="width: 100px">Số điện thoại: </td>
+                <td>@Model.SDT &emsp;&emsp; Email: @Model.Email</td>
+            </tr>
+            <tr>
+                <td style="width: 100px">Ðại diện</td>
+                <td><b class="text-capitalize">Ông/Bà @Model.HieuTruong</b> &emsp; Chức vụ: Hiệu trưởng</td>
+            </tr>
+            <tr>
+                <td style="width: 100px">Mã số thuế</td>
+                <td>@Model.MaSoThue</td>
+            </tr>
+        </table>
+        <p>&emsp;&emsp; Hai bên cùng thỏa thuận ký kết hợp đồng với các điều khoản cụ thể sau:</p>
+        <p><b>Điều 1: Nội dung hợp đồng</b></p>
+        <p>&emsp;&emsp;Bên A duy trì và hỗ trợ vận hành cổng thông tin điện tử của bên B đáp ứng yêu cầu thông tin, quản lý trên môi trường internet.</p>
+        <p><b>Điều 2: Trách nhiệm bên A</b></p>
+        <p>
+            &emsp;&emsp;-	Chịu trách nhiệm duy trì và hỗ trợ vận hành cổng thông tin điện tử trong
+            hệ thống cổng thông tin điện tử của ngành giáo dục và đào tạo Thành phố Hồ Chí Minh cho bên B. Đảm bảo cổng thông tin điện tử vận hành ổn định, an toàn an ninh hệ thống.
+        </p>
+        <p>
+            &emsp;&emsp;-	Chuyển giao quyền quản trị cổng thông tin điện tử cho đơn vị và cung cấp
+            cho bên B địa chỉ cổng thông tin theo đúng thể thức: <b>tendonvi.hcm.edu.vn</b>.
+        </p>
+        <p>
+            &emsp;&emsp;-	Đảm bảo cơ sở dữ liệu của cổng thông tin điện tử được tích hợp trong hệ thống
+            cổng thông tin điện tử của ngành giáo dục và đào tạo thành phố. Cổng thông tin điện tử đáp ứng các yêu cầu về mặt kỹ thuật theo Văn bản số 3082/GDĐT-TTTT ngày 13 tháng 9 năm 2016  của Sở Giáo dục và Đào tạo về hướng dẫn tổ chức, xây dựng và vận hành trang thông tin điện tử hoặc cổng thông tin điện tử của đơn vị giáo dục.
+        </p>
+        <p><b>Điều 3: Trách nhiệm của bên B</b></p>
+        <p>
+            &emsp;&emsp;-	Thành lập Ban biên tập cổng thông tin trong đó có 01 lãnh đạo đơn vị
+            làm Trưởng ban và 01 nhân sự để tiếp nhận quyền quản trị hệ thống và các biên tập viên (số lượng các biên tập viên tùy thuộc vào sự phân công của Trưởng ban hoặc nội dung mà đơn vị cần biên tập…).
+        </p>
+        <p>
+            &emsp;&emsp;-	Tổ chức tập huấn cho cán bộ, giáo viên trường thực hiện đúng yêu cầu công tác.
+        </p>
+        <p>
+            &emsp;&emsp;-	Tổ chức thực hiện việc cập nhật thông tin liên tục và vận hành cổng thông tin đúng yêu cầu, mục đích, đảm bảo nội dung lành mạnh và chuẩn mực.
+        </p>
+        <p>
+            &emsp;&emsp;-	Thanh toán kinh phí theo Điều 4 của hợp đồng.
+        </p>
+        <p><b>Điều 4: Thời hạn và kinh phí hợp đồng</b></p>
+        <p>
+            &emsp;&emsp;-	Thời hạn có hiệu lực là <b>12</b> tháng.
+        </p>
+        <p>
+            &emsp;&emsp;-	Tính từ ngày ……/……/<b>@DateTime.Now.Year</b> đến ngày ……/……/<b>@DateTime.Now.AddYears(1).Year</b>.
+        </p>
+
+        @{
+        if (Model.Ward.District.Type == "Huyện")
+        {
+        <p>
+            &emsp;&emsp;-	Tổng kinh phí hợp đồng là: <b>3.600.000đ</b> (Ba triệu sáu trăm ngàn đồng chẵn)<br />
+            &emsp;&emsp;<i>(300.000đ x 12 tháng = 3.600.000đ</i> – đã bao gồm thuế).
+        </p>
+    }
+    else
+    {
+        <p>
+            &emsp;&emsp;-	Tổng kinh phí hợp đồng là: <b>4.800.000đ</b> (Bốn triệu tám trăm ngàn đồng chẵn)<br />
+            &emsp;&emsp;<i>(400.000đ x 12 tháng = 4.800.000đ</i> – đã bao gồm thuế).
+        </p>
+}
+        }
+        <p> &emsp;&emsp;<i> ( Nếu bằng hình thức chuyển khoản số tiền trên không bao gồm phí chuyển khoản).</i></p>
+        <p>
+            &emsp;&emsp;-	Hình thức thanh toán: bằng tiền mặt hoặc chuyển khoản
+        </p>
+        <p>&emsp;&emsp;&emsp;&emsp;+	Tiền mặt: thanh toán trực tiếp tại trụ sở của bên A.</p>
+        <p>
+            &emsp;&emsp;&emsp;&emsp;+	Chuyển khoản: <br />
+            <b>Thông tin chuyển khoản:</b>
+        </p>
+        <table style="border: groove">
+            <tr>
+                <td>Đơn vị: </td>
+                <td>TT THÔNG TIN VÀ CHƯƠNG TRÌNH GIÁO DỤC</td>
+            </tr>
+            <tr>
+                <td>Số <b>TK</b></td>
+                <td><b>200014851095514</b></td>
+            </tr>
+            <tr>
+                <td>Ngân hàng</td>
+                <td>
+                    TMCP Xuất Nhập Khẩu Việt Nam (VIETNAM EXIMBANK)
+                    EXIMBANK CN Hồ Chí Minh .
+                    MÃ NGÂN HÀNG EXIMBANK: <b>79305001</b>
+                </td>
+            </tr>
+            <tr>
+                <td>Địa chỉ</td>
+                <td>229 Đồng Khởi,P.Bến Nghé, Quận 1, TP.HCM</td>
+            </tr>
+            <tr>
+                <td>Nội dung chuyển khoản:</td>
+                <td>Hợp đồng tạo lập Cổng thông tin điện tử.</td>
+            </tr>
+        </table>
+        <p>
+            &emsp;&emsp;-	Thời hạn thanh toán: sau khi bên A đã xuất hóa đơn tài chính cho bên B,
+            chậm nhất sau 05 ngày làm việc bên B có trách nhiệm thanh toán cho bên A theo đúng số tiền đã ghi trong hóa đơn tài chính.
+        </p>
+        <p><b>Điều 5: Điều khoản chung</b></p>
+        <p>
+            &emsp;&emsp;-	Hai bên cam kết thực hiện đúng các điều khoản đã thỏa thuận trong hợp đồng.
+            Trong quá trình thực hiện nếu có các vấn đề phát sinh, hai bên sẽ cùng trao đổi và
+            thống nhất cách giải quyết.
+        </p>
+        <p>
+            &emsp;&emsp;-	Hợp đồng được tự động thanh lý khi kết thúc hiệu lực. Nếu bên B có nhu cầu kéo dài thời gian sử dụng cổng thông tin điện tử hai bên sẽ ký hợp đồng mới để duy trì cổng thông tin điện tử.
+        </p>
+        <p>
+            &emsp;&emsp;-	Hợp đồng được lập thành 02 bản có giá trị như nhau, mỗi bên giữ 01 bản và
+            có hiệu lực kể từ ngày ký.
+        </p>
+        <div class="row">
+            <div class="col-xs-5 text-center">
+                <p class="text-uppercase">
+                    <b>
+                        ĐẠI DIỆN BÊN A <br />
+                        KT. GIÁM ĐỐC <br />
+                        PHÓ GIÁM ĐỐC<br />
+                    </b>
+                </p>                           
+                <br />
+                <p><b>Nguyễn Hồng Tuấn</b></p>
+            </div>
+            <div class="col-xs-7 text-center">
+                <p>
+                    <b>
+                        ĐẠI DIỆN BÊN B <br />
+                        HIỆU TRƯỞNG
+                    </b>
+                </p>               
+                
+                <br />
+                <br />
+                <p class="text-capitalize"><b>@Model.HieuTruong</b></p>
+            </div>
+        </div>
+
+    </div>
+    <div class="text-center">
+        <a href="/thongtintruong/@Model.MaTruong" role="button" class="btn btn-primary">
+            <span class="fa fa-cogs"></span> CẬP NHẬT LẠI THÔNG TIN HỢP ĐỒNG
+        </a>
+        <button class="btn btn-warning" onclick="printContract();">IN HỢP ĐỒNG  <span class="fa fa-print fa-large"></span></button>
+        <p class="text-danger"><i>(Lưu ý in hợp đồng thành 2 bản)</i></p>
+    </div>
+
+    <div class="preloader" id="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10" />
+        </svg>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script>
+        function printContract() {
+            $("#contract-to-print").printThis();
+        }
+
+    </script>
+</body>
+</html>

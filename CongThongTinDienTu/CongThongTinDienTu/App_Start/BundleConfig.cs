@@ -21,11 +21,23 @@ namespace CongThongTinDienTu
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
-
+                      "~/Scripts/respond.js",
+                      "~/Scripts/bootstrap-datepicker.js",
+                      "~/Scripts/custom.js",
+                      "~/Scripts/dataTables.min.js",
+                      "~/Scripts/dataTables.bootstrap.min.js",
+                      "~/Scripts/printThis.js",
+                      "~/Scripts/moment.js"
+                      ));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/font-awesome.min.css",
+                      "~/Content/datepicker3.css",
+                       "~/Content/datepicker.css",
+                      "~/Content/styles.css",
+                      "~/Content/dataTables.min.css"
+                      ));
         }
     }
 }

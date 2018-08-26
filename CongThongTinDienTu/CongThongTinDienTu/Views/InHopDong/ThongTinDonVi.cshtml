@@ -1,0 +1,211 @@
+﻿@model CongThongTinDienTu.Models.DTO.ThongTinTruongOneViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Thông tin trường</title>
+    <link rel="shortcut icon" href="~/Content/Images/logo_so.png">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="container">
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Thông tin trường
+                </div>
+                <div class="panel-body">
+                    <form id="thongtintruong">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Tên trường</label>
+                            <p class="form-control-static text-uppercase">@Model.School.TenTruong</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group has-feedback" id="errorMasothue">
+                                    <label for="exampleInputPassword1" class="control-label">Mã số thuế</label>
+                                    <input type="text" class="form-control" id="masothue" name="masothue" value="@Model.School.MaSoThue">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Địa chỉ</label>
+                        </div>
+                        <div class="col-sm-offset-1">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Quận</label>
+                                        <select class="form-control" id="quanhuyen">
+                                            @{
+                                            foreach (var item in Model.Districts)
+                                            {
+                                                if (item.Id == Model.School.Ward.DistrictID)
+                                                {
+                                                    <option value="@item.Id" selected>@item.Type @item.Name </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Id">@item.Type @item.Name</option>
+                                        }
+                                    }
+                                            }
+
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Phường</label>
+                                        <select class="form-control" id="phuongxa">
+                                            @{
+                                            foreach (var item in Model.Wards)
+                                            {
+                                                if (item.Id == Model.School.WardId)
+                                                {
+                                                    <option value="@item.Id" selected>@item.Type @item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Id">@item.Type @item.Name</option>
+                                        }
+                                    }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback" id="errorTenduongsonha">
+                                <label for="exampleInputPassword1" class="control-label">Số nhà, tên đường</label>
+                                <input type="text" class="form-control" id="tenduongsonha" name="tenduongsonha" value="@Model.School.SoNhaTenDuong">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group" id="errorSodienthoai">
+                                    <label for="exampleInputPassword1" class="control-label">Số điện thoại</label>
+                                    <input type="number" class="form-control" id="sodienthoai" name="sodienthoai" value="@Model.School.SDT">
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="form-group" id="errorEmail">
+                                    <label for="exampleInputPassword1" class="control-label">Email</label>
+                                    <input type="email" class="form-control" name="email" id="email" value="@Model.School.Email">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group has-feedback" id="errorTennguoiki">
+                                    <label for="exampleInputPassword1" class="control-label">Tên hiệu trưởng</label>
+                                    @{
+                                        <input type="text" class="form-control" name="tennguoiki" id="tennguoiki" value="@Model.School.HieuTruong">
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right"><button class="btn btn-success" type="submit" id="submit">XÁC NHẬN</button></div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <span class="loader" hidden id="preloader"></span>
+    </div>
+    
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('#quanhuyen').change(function () {
+                $.get('/getWardByDistrictId/' + $(this).val(), function (data, status) {
+                    var wards = JSON.parse(data.Results);
+                    $('#phuongxa').children().remove().end();
+                    for (var i = 0; i < wards.length; i++) {
+
+                        $('#phuongxa').append('<option value=' + wards[i].Id + '>' + wards[i].Type + ' ' + wards[i].Name + '</option>')
+                    }
+                })
+            })
+            $("#thongtintruong").validate({
+                rules: {
+                    masothue: 'required',
+                    tenduongsonha: 'required',
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    sodienthoai: {
+                        required: true
+                    },
+                    tennguoiki: 'required'
+                },
+                messages: {
+                    masothue: 'Vui lòng nhập',
+                    email: 'Vui lòng nhập email hợp lệ',
+                    sodienthoai: 'Vui lòng nhập',
+                    tennguoiki: 'Vui lòng nhập',
+                },
+                errorElement: "em",
+                errorPlacement: function (error, element) {
+                    // Add the `help-block` class to the error element
+                    error.addClass("help-block");
+
+                    // Add `has-feedback` class to the parent div.form-group
+                    // in order to add icons to inputs
+                    element.parent().addClass("has-error");
+
+                    if (element.prop("type") === "checkbox") {
+                        error.insertAfter(element.parent("label"));
+                    } else {
+                        error.insertAfter(element);
+                    }
+
+                    // Add the span element, if doesn't exists, and apply the icon classes to it.
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).parent().addClass("has-error");
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).parent().removeClass("has-error");
+                },
+                submitHandler: function (form) {
+                    $('#submit').addClass('disabled');
+                    $('#preloader').show();
+                    $.post('/capnhatthongtintruong', {
+                        Id: @Model.School.Id,
+                        WardId: $('#phuongxa').val(),
+                        SoNhaTenDuong: $('#tenduongsonha').val(),
+                        HieuTruong: $('#tennguoiki').val(),
+                        Email: $('#email').val(),
+                        SDT: $('#sodienthoai').val(),
+                        MaSoThue: $('#masothue').val(),
+                    }, function (data, status) {
+                        debugger;
+                        if (status == 'success' && data.StatusCode == 200) {
+                            window.location.replace('/hopdongduytrymau/' + data.Results);
+                        }
+                        else if (status == 'success' && data.StatusCode == 400) {
+                            window.location.replace('/hopdongtaolapmau/' + data.Results);
+                        }
+                    })
+                }
+            }
+            )
+        })
+    </script>
+</body>
+</html>

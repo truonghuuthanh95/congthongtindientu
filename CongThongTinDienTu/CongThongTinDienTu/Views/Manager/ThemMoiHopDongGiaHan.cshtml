@@ -1,0 +1,199 @@
+﻿@model CongThongTinDienTu.Models.DTO.HopDongOneViewModel
+@{
+    ViewBag.Title = "Hợp đồng duy trì";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Hơp đồng duy trì</li>
+    </ol>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Hơp đồng duy trì</h1>
+    </div>
+</div>
+<div class="col-sm-10 col-sm-offset-1">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form id="thongtintruong" onsubmit="taoMoiHopDong();">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="formBasicText" class="control-label">
+                                Cấp trường
+                            </label>
+                            <select name="caphoc" id="caphoc" class="form-control">
+                                @{
+        foreach (var item in Model.CapTruongs)
+        {
+                            <option value="@item.Id">@item.TenDayDu</option>
+}
+                                }
+
+                              
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="formBasicText" class="control-label">
+                                Quận/Huyện
+                            </label>
+                            <select name="quanhuyen" id="quanhuyen" class="form-control">
+                                @{
+        foreach (var item in Model.Districts)
+        {
+                            <option value="@item.Id">@item.Type @item.Name</option>
+}
+                                }
+
+                              
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group has-feedback" id="errorTenTruong">
+                            <label for="formBasicText" class="control-label">
+                                Tên Trường
+                            </label>
+                            <select name="tentruong" id="tentruong" class="form-control">
+                                @{
+            foreach (var item in Model.Schools)
+            {
+                        <option value="@item.Id">@item.TenTruong</option>
+}
+                                }
+
+
+                            </select>
+                            <span class="help-block help-block-true" id="errorTenTruongMessage"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="formBasicText" class="control-label">
+                                Ngày kí hợp đồng
+                            </label>
+                            <input type="text" class="form-control datepicker" id="ngaykihopdong" name="ngaykihopdong" value="@DateTime.Now.Day.ToString("d2")-@DateTime.Now.Month.ToString("d2")-@DateTime.Now.Year">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="formBasicText" class="control-label">
+                                Ngày hiệu lực
+                            </label>
+                            <input type="text" class="form-control datepicker" id="ngayhieuluc" name="ngayhieuluc" value="@DateTime.Now.AddDays(10).Day.ToString("d2")-@DateTime.Now.AddDays(10).Month.ToString("d2")-@DateTime.Now.AddDays(10).Year" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="formBasicText" class="control-label">
+                                Hình thức thanh toán
+                            </label>
+                            <select name="hinhthucthanhtoan" id="hinhthucthanhtoan" class="form-control">
+                                <option value="true">Tiền mặt</option>
+                                <option value="false">Chuyển khoản</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="formBasicText" class="control-label">
+                        Ghi chú
+                    </label>
+                    <textarea class="form-control" rows="3" id="ghichu"></textarea>
+                </div>
+                <div class="text-right"><button class="btn btn-success" type="button" onclick="taoMoiHopDong();" id="submit">THÊM MỚI</button></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<span class="loader" hidden id="preloader"></span>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Kết quả</h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-success text-center">Thêm mới thành công</h4>
+                <h4 class="text-danger text-center" id="sohopdong"></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>               
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.datepicker').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true,
+
+        });
+        $('#quanhuyen').change(function () {
+            $.get('/getSchoolsChuaGiaHan/' + $(this).val() + '/' + $('#caphoc').val(), function (data, status) {
+                var school = JSON.parse(data.Results);
+                $('#tentruong').children().remove().end();
+                for (var i = 0; i < school.length; i++) {
+                    $('#tentruong').append('<option value=' + school[i].Id + '>' + school[i].TenTruong + '</option>')
+                }
+            })
+        })
+        $('#caphoc').change(function () {
+            $.get('/getSchoolsChuaGiaHan/' + $('#quanhuyen').val() + '/' + $(this).val(), function (data, status) {
+                var school = JSON.parse(data.Results);
+                $('#tentruong').children().remove().end();
+                for (var i = 0; i < school.length; i++) {
+                    $('#tentruong').append('<option value=' + school[i].Id + '>' + school[i].TenTruong + '</option>')
+                }
+            })
+        })
+    })
+
+    function taoMoiHopDong() {
+        if ($('#tentruong').val() == null) {
+            $('#errorTenTruong').addClass('has-error');
+            $('#errorTenTruongMessage').text('Không có trường');
+        }
+        else {
+            $('#errorTenTruong').removeClass('has-error');
+            $('#errorTenTruongMessage').text('');
+            $('#preloader').show();
+            $('#submit').addClass('disabled');
+            $.post('/quanly/themmoihopdonggiahan', {
+                SchoolId: $('#tentruong').val(),
+                NgayKiHD: moment($('#ngaykihopdong').val(), 'DD-MM-YYYY').format('YYYY-MM-DD'),
+                NgayHieuLucHD: moment($('#ngayhieuluc').val(), 'DD-MM-YYYY').format('YYYY-MM-DD'),
+                GhiChu: $('#ghichu').val(),
+                IsThanhToanBangTienMat: $('#hinhthucthanhtoan').val(),
+            }, function (data, status) {
+                if (data.StatusCode == 200 && status == 'success') {
+                    var hopdong = JSON.parse(data.Results);
+                    $('#sohopdong').text('Mã HĐ: ' + hopdong.MaHopDong);
+                    $('#myModal').modal('show');
+                    $('#preloader').hide();
+                    $('#submit').removeClass('disabled');
+                }
+                else if (data.StatusCode == 403 && status == 'success') {
+                    window.location.replace("/login");
+                }
+            })
+        }
+    }
+</script>

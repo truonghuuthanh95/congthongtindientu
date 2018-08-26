@@ -1,0 +1,16 @@
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\bin\Debug\GuiMailCongThongTin.exe.config
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\bin\Debug\GuiMailCongThongTin.exe.manifest
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\bin\Debug\GuiMailCongThongTin.application
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\bin\Debug\GuiMailCongThongTin.exe
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\bin\Debug\GuiMailCongThongTin.pdb
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\bin\Debug\EntityFramework.dll
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\bin\Debug\EntityFramework.xml
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\obj\Debug\GuiMailCongThongTin.csproj.CoreCompileInputs.cache
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\obj\Debug\GuiMailCongThongTin.exe.manifest
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\obj\Debug\GuiMailCongThongTin.application
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\obj\Debug\GuiMailCongThongTin.csproj.CopyComplete
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\obj\Debug\GuiMailCongThongTin.exe
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\obj\Debug\GuiMailCongThongTin.pdb
+C:\Users\thanhthse61493\Desktop\ASP.NET MVC\Git\congthongtindientu\CongThongTinDienTu\GuiMailCongThongTin\obj\Debug\GuiMailCongThongTin.csprojResolveAssemblyReference.cache

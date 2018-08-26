@@ -1,0 +1,112 @@
+﻿@model IEnumerable<CongThongTinDienTu.Models.DAO.HopDong>
+@{
+    ViewBag.Title = "Danh sách hợp đồng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Hợp đồng</li>
+    </ol>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Hợp đồng @ViewBag.Year</h1>
+    </div>
+</div>
+
+<div class="panel panel-default">
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-8 text-right" style="padding-bottom: 30px">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="exampleInputName2">Năm kí hợp đồng</label>
+                        <select class="form-control" id="namkihopdong" onchange="location = this.value;">
+                            @{
+        for (int i = 2017; i < DateTime.Now.Year + 1; i++)
+        {
+            if (i == ViewBag.Year)
+            {
+                        <option value="/quanly/danhsachhopdong/@i" selected>@i</option>
+}
+else
+{
+                        <option value="/quanly/danhsachhopdong/@i">@i</option>
+}
+
+}
+                            }
+
+                        </select>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <table class="table table-hover table-responsive" id="danhsachhopdong">
+            <thead>
+                <tr>
+                    <th>Số Hợp Đồng</th>
+                    <th>Tên Trường</th>
+                    <th>Cấp trường</th>
+                    <th>Quận/Huyện</th>
+                    <th>Ngày Kí HD</th>
+                    <th>Ngày Hiệu Lực</th>
+                    <th>Hình Thức TT</th>
+                    <th>Loại HD</th>
+                    <th>Số Tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.MaHopDong</td>
+                            <td>@item.School.TenTruong</td>
+                            <td>@item.School.CapTruong.TenVietTat</td>
+                            <td>@item.School.Ward.District.Type @item.School.Ward.District.Name</td>
+                            <td>@item.NgayKiHD.Value.ToString("dd/MM/yyyy")</td>
+                            <td>@item.NgayHieuLucHD.Value.ToString("dd/MM/yyyy")</td>
+                            @{
+                                if (item.IsThanhToanBangTienMat == true)
+                                {
+                                    <td>Tiền mặt</td>
+                                }
+                                else
+                                {
+                                    <td>Chuyển khoản</td>
+                                }
+                            }
+                            @{
+                                if (item.IsTaoMoi == true)
+                                {
+                                    <td>Tạo mới</td>
+                                }
+                                else
+                                {
+                                    <td>Duy trì</td>
+                                }
+                            }                           
+
+                            <td>@String.Format("{0:0,0}", item.SoTien)</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#danhsachhopdong').DataTable();
+    })
+    
+</script>

@@ -1,24 +1,61 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿@media only screen and (max-width: 400px) {
+    .navbar-brand{
+        display: none;
+    }
+}
+.contract {
+    font-family: 'Times New Roman';
+    font-size: 13pt;
+    /*font-style: normal;
+    font-variant: normal;
+    font-weight: 700;*/
+    line-height: 15pt;
+    padding: 25pt;
+    padding-top: 0px;
+    color: black;
+}
+    .contract > p {
+        color: black;
+        margin-bottom: 10px;
+    }
+    .contract > div > div > p {
+        color: black;
+        margin-bottom: 10px;
+    }
+
+.loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 100;
+    width: 80px;
+    height: 80px;
+    margin: -75px 0 0 -75px;
+    border: 10px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 10px solid blue;
+    border-right: 10px solid green;
+    border-bottom: 10px solid red;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
-}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+    100% {
+        transform: rotate(360deg);
+    }
 }

@@ -1,0 +1,74 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Kiểm tra mã trường</title>
+    <link rel="shortcut icon" href="~/Content/Images/logo_so.png">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body style="padding-top: 70px; background-color: white">
+   
+    <div class="text-center">
+        <h3 class="text-primary"><b>IN HỢP ĐỒNG CỔNG THÔNG TIN ĐIỆN TỬ - SỞ GIÁO DỤC & ĐÀO TẠO TP.HCM</b></h3>
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="panel">
+                <div class="panel-body">
+                    <form class="form-inline">
+                        <p class="text-danger" id="error"></p>
+                        <div class="form-group">
+                            <label for="exampleInputEmail2">Mã trường</label>
+                            <input type="text" class="form-control" id="matruong">
+                        </div>
+                        <button type="submit" class="btn btn-success" onclick="checkMaTruong();" id="submitMaDangKi">KIỂM TRA</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <span class="loader" hidden id="preloader"></span>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@RenderSection("scripts", required: false)*@
+
+    <script>
+        function checkMaTruong() {
+            event.preventDefault();
+            if ($('#matruong').val() == '') {
+                $('#error').text('Vui lòng nhập mã trường')
+            }
+            else {
+                $('#error').text('')
+                $('#matruong').attr("disabled", true);
+                $('#submitMaDangKi').addClass('disabled')
+                $('#preloader').show();
+                $.get("/kiemtramatruong/" + $('#matruong').val().trim(), function (data, status) {
+                    
+                    if (data.StatusCode == 200) {
+                        window.location.replace("/thongtintruong/" + data.Results);
+                    }
+                    else if (data.StatusCode == 403) {
+
+                    }
+                    else {
+                        $('#matruong').attr("disabled", false);
+                        $('#submitMaDangKi').removeClass('disabled');
+                        $('#preloader').hide();
+                        $('#error').text(data.Message);
+                    }
+                })
+            }
+        }
+        
+        
+    </script>
+
+</body>
+</html>
