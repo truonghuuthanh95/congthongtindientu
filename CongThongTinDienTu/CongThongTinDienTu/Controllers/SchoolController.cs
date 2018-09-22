@@ -36,7 +36,11 @@ namespace CongThongTinDienTu.Controllers
             {
                 return Json(new ReturnFormat(400, "success", school.MaTruong));
             }
-            return Json(new ReturnFormat(200, "success", school.MaTruong));           
+            if (school.IsDaTaoMoi == true)
+            {
+                return Json(new ReturnFormat(200, "true", school.MaTruong));
+            }
+            return Json(new ReturnFormat(200, "false", school.MaTruong));           
         }
         [Route("getWardByDistrictId/{id}")]
         [HttpGet]       

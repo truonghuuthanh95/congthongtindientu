@@ -196,7 +196,13 @@
                     }, function (data, status) {
                         debugger;
                         if (status == 'success' && data.StatusCode == 200) {
-                            window.location.replace('/hopdongduytrymau/' + data.Results);
+                            if (data.Message == 'true') {
+                                window.location.replace('/hopdongduytrymau/' + data.Results);
+                            }
+                            else {
+                                window.location.replace('/hopdongtaolap/' + data.Results);
+                            }
+                           
                         }
                         else if (status == 'success' && data.StatusCode == 400) {
                             window.location.replace('/hopdongtaolapmau/' + data.Results);
