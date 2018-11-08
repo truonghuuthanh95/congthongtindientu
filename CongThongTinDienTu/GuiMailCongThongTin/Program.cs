@@ -53,7 +53,7 @@ namespace GuiMailCongThongTin
                     string htmlBody = "<p style='font-size: 14px;'>Kính gửi Quý đơn vị,</p> <br/> " +
                         "<p style='font-size: 14px;'><b>Trung tâm Thông tin và Chương trình Giáo dục – Sở GD&ĐT TP.HCM</b> xin thông báo đến Quý đơn vị <b>" + item.School.TenTruong + "</b> với mã trường <b>" + item.School.MaTruong + "</b>. Trang thông tin điện tử(website) của Quý đơn vị sẽ hết hạn hợp đồng vào ngày <b style='color: red; font-size: 15px;'>" +
                         +item.NgayHieuLucHD.Value.AddYears(1).Day + "/" + item.NgayHieuLucHD.Value.AddYears(1).Month + "/" + item.NgayHieuLucHD.Value.AddYears(1).Year + "</b>. Để tiếp tục sử dụng website, Quý đơn vị vui lòng thực hiện đầy đủ các bước gia hạn hợp đồng tại địa chỉ sau: <br/>" +
-                        "1. Truy cập vào website <a href='http://conthongtin.hcm.edu.vn/'>http://conthongtin.hcm.edu.vn/</a></br>" +
+                        "1. Truy cập vào website <a href='http://hopdpngcttdt.hcm.edu.vn/'>http://hopdpngcttdt.hcm.edu.vn/</a></br>" +
                         "2. Điền mã trường sau đó xác nhận thông tin trường <br />" +
                         "3. In hồ sơ <br />" +
                         "<i>Lưu ý: In hồ sơ thành 2 bản, đơn vị thủ trường kí, sau đó mang hợp đồng tới 66 – 68 Lê Thánh Tôn, Phường Bến Nghé, Quận 1, TP.HCM – Phòng 10.2</i></p>" +

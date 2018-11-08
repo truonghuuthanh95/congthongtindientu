@@ -9,9 +9,13 @@ namespace CongThongTinDienTu.Repositories.Interfaces
 {
     public interface IHopDongRepository
     {
-        HopDong TaoMoiHopDong(HopDongDTO hopDongDTO, int nguoiTiepNhan, bool isTaoMoi);
+        HopDong TaoMoiHopDongTaoLap(HopDongDTO hopDongDTO, int nguoiTiepNhan);
+        HopDong TaoMoiHopDongDuyTri(HopDongDTO hopDongDTO, int nguoiTiepNhan);
         int GetMaxSoHopDong();
 
         List<HopDong> GetHopDongsByYear(int year);
+        List<HopDong> GetHopDongsBySchoolId(int schoolId);
+        HopDong GetHopDongById(int id);
+        HopDong CapNhatHopDong(HopDong hopDong);
     }
 }

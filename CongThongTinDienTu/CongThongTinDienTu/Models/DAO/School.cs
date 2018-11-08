@@ -13,6 +13,7 @@ namespace CongThongTinDienTu.Models.DAO
         public School()
         {
             HopDongs = new HashSet<HopDong>();
+            LogEmails = new HashSet<LogEmail>();
         }
 
         public int Id { get; set; }
@@ -22,7 +23,7 @@ namespace CongThongTinDienTu.Models.DAO
 
         public int? WardId { get; set; }
 
-        [StringLength(50)]
+        [StringLength(500)]
         public string SoNhaTenDuong { get; set; }
 
         public bool? IsDaTaoMoi { get; set; }
@@ -58,6 +59,9 @@ namespace CongThongTinDienTu.Models.DAO
         public virtual ICollection<HopDong> HopDongs { get; set; }
 
         public virtual LoaiHinh LoaiHinh1 { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LogEmail> LogEmails { get; set; }
 
         public virtual NhaCungCap NhaCungCap { get; set; }
 

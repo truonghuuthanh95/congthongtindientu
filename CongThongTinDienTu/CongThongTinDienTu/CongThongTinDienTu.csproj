@@ -200,9 +200,12 @@
     <Compile Include="Models\DAO\NhaCungCap.cs" />
     <Compile Include="Models\DAO\Role.cs" />
     <Compile Include="Models\DAO\School.cs" />
+    <Compile Include="Models\DAO\SchoolTMP.cs" />
+    <Compile Include="Models\DAO\sysdiagram.cs" />
     <Compile Include="Models\DAO\Ward.cs" />
     <Compile Include="Models\DTO\HopDongDTO.cs" />
     <Compile Include="Models\DTO\HopDongOneViewModel.cs" />
+    <Compile Include="Models\DTO\KiemTraTruongDTO.cs" />
     <Compile Include="Models\DTO\ReturnFormat.cs" />
     <Compile Include="Models\DTO\SchoolDTO.cs" />
     <Compile Include="Models\DTO\ThongTinTruongOneViewModel.cs" />
@@ -260,6 +263,7 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\dataTables.bootstrap.min.js" />
@@ -308,6 +312,7 @@
     <Content Include="Views\InHopDong\HopDongTaoLapMau.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Manager\DanhSachHopDongTheoNam.cshtml" />
+    <Content Include="Views\Manager\TimKiemTruong.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

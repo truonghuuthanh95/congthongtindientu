@@ -11,17 +11,19 @@ namespace CongThongTinDienTu.Controllers
 {
     public class InHopDongController : Controller
     {
+        
         ISchoolRepository schoolRepository;
         IDistrictRepository districtRepository;
         IWardRepository wardRepository;
+        IHopDongRepository hopDongRepository;
 
-        public InHopDongController(ISchoolRepository schoolRepository, IDistrictRepository districtRepository, IWardRepository wardRepository)
+        public InHopDongController(ISchoolRepository schoolRepository, IDistrictRepository districtRepository, IWardRepository wardRepository, IHopDongRepository hopDongRepository)
         {
             this.schoolRepository = schoolRepository;
             this.districtRepository = districtRepository;
             this.wardRepository = wardRepository;
+            this.hopDongRepository = hopDongRepository;
         }
-
 
 
         // GET: InHopDong
@@ -72,6 +74,7 @@ namespace CongThongTinDienTu.Controllers
             }
             wards = wardRepository.GetWardsByDistrictId(school.Ward.DistrictID);
             ThongTinTruongOneViewModel thongTinTruongOneViewModel = new ThongTinTruongOneViewModel(school, districts, wards);
+            ViewBag.HopDongDaKis = hopDongRepository.GetHopDongsBySchoolId(school.Id);
             return View(thongTinTruongOneViewModel);
         }
         [Route("hopdongtaolapmau/{matruong}")]

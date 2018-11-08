@@ -36,6 +36,11 @@ namespace CongThongTinDienTu.Models.DAO
 
         public int? MaHopDong { get; set; }
 
+        [Column(TypeName = "date")]
+        public DateTime? NgayThanhToan { get; set; }
+
+        public int? SoNam { get; set; }
+
         public virtual Account Account { get; set; }
 
         public virtual School School { get; set; }

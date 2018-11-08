@@ -15,5 +15,9 @@ namespace CongThongTinDienTu.Models.DAO
         public string NoidungGui { get; set; }
 
         public bool? IsSuccessful { get; set; }
+
+        public int? SchoolId { get; set; }
+
+        public virtual School School { get; set; }
     }
 }

@@ -13,10 +13,11 @@ namespace CongThongTinDienTu.Models.DTO
 
         public DateTime NgayHieuLucHD { get; set; }
 
-        public string GhiChu { get; set; } = "Không có";
-
-        public bool IsThanhToanBangTienMat { get; set; }      
+        public string GhiChu { get; set; } = "Không có";       
 
         public decimal? SoTien { get; set; }
+        public int? SoNam { get; set; }
+        public DateTime? NgayThanhToan { get; set; }
+        public bool? IsThanhToanBangTienMat { get; set; }
     }
 }

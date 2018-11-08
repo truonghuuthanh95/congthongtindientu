@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewBag.Title = "Kiểm tra trường";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Kiểm tra trường</li>
+    </ol>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Kiểm tra trường</h1>
+    </div>
+</div>
+<div class="col-sm-12">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="formBasicText" class="control-label">
+                            Cấp trường
+                        </label>
+                        <select name="caphoc" id="caphoc" class="form-control">
+                            @{
+                                foreach (var item in ViewBag.CapTruongs)
+                                {
+                                    <option value="@item.Id">@item.TenDayDu</option>
+                                }
+                            }
+
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="formBasicText" class="control-label">
+                            Quận/Huyện
+                        </label>
+                        <select name="quanhuyen" id="quanhuyen" class="form-control">
+                            @{
+                                foreach (var item in ViewBag.Districts)
+                                {
+                                    <option value="@item.Id">@item.Type @item.Name</option>
+                                }
+                            }
+
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group has-feedback" id="errorTenTruong">
+                        <label for="formBasicText" class="control-label">
+                            Tên Trường
+                        </label>
+                        <select name="tentruong" id="tentruong" class="form-control">
+                            @{
+                                foreach (var item in ViewBag.Schools)
+                                {
+                                    <option value="@item.Id">@item.TenTruong</option>
+                                }
+                            }
+                        </select>
+                        <span class="help-block help-block-true" id="errorTenTruongMessage"></span>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group has-feedback" id="errorTenTruong">
+                        <label for="formBasicText" class="control-label">
+                            Kiểm Tra
+                        </label>
+                        <button class="btn btn-primary text-center" onclick="getHopDong();"><span class="glyphicon glyphicon-search"></span></button>
+                    </div>
+                </div>
+            </div>
+            <div class="hopdonginfo">
+                <h4 class="text-danger" id="matruong"></h4>
+                <table class="table table-striped" id="hopdong">
+                    <thead>
+                        <tr>
+                            <th>Số HD</th>                                                     
+                            <th>Ngày Kí</th>
+                            <th>Ngày HL</th>
+                            <th>HT TT</th>
+                            <th>Loại HD</th>
+                            <th>Số Tiền</th>
+                            <th>Ngày Đóng</th>
+                            <th>Số năm</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#quanhuyen').change(function () {
+        $.get('/getSchoolByDistrictAndCapTruong/' + $(this).val() + '/' + $('#caphoc').val(), function (data, status) {
+            var school = JSON.parse(data.Results);
+            $('#tentruong').children().remove().end();
+            for (var i = 0; i < school.length; i++) {
+                $('#tentruong').append('<option value=' + school[i].Id + '>' + school[i].TenTruong + '</option>')
+            }
+        })
+    })
+    $('#caphoc').change(function () {
+        $.get('/getSchoolByDistrictAndCapTruong/' + $('#quanhuyen').val() + '/' + $(this).val(), function (data, status) {
+            var school = JSON.parse(data.Results);
+            $('#tentruong').children().remove().end();
+            for (var i = 0; i < school.length; i++) {
+                $('#tentruong').append('<option value=' + school[i].Id + '>' + school[i].TenTruong + '</option>')
+            }
+        })
+    })
+    function getHopDong() {
+        $.get('/quanly/gethopdongbyschoolId/' + $('#tentruong').val(), function (data, status) {
+            if (data.StatusCode == 403 && status == 'success') {
+                window.location.replace('/login');
+            }
+            else {
+                hopdong = JSON.parse(data.Results)
+                $('#matruong').text(hopdong.MaTruong + ' - ' + $('#tentruong :selected').text())
+                $("#hopdong > tbody").html("");
+                if (hopdong.HopDongs.length > 0) {
+                    for (var i = 0; i < hopdong.HopDongs.length; i++) {
+                        $('#hopdong').append('<tr><td>'
+                            + hopdong.HopDongs[i].MaHopDong + '</td><td>'
+                            + (new Date(hopdong.HopDongs[i].NgayKiHD).getDate() + '/' + (new Date(hopdong.HopDongs[i].NgayKiHD).getMonth() + 1) + '/' + new Date(hopdong.HopDongs[i].NgayKiHD).getFullYear()) + '</td><td>'
+                            + (new Date(hopdong.HopDongs[i].NgayHieuLucHD).getDate() + '/' + (new Date(hopdong.HopDongs[i].NgayHieuLucHD).getMonth() + 1) + '/' + new Date(hopdong.HopDongs[i].NgayHieuLucHD).getFullYear()) + '</td><td>'
+                            + (hopdong.HopDongs[i].IsThanhToanBangTienMat == true ? 'TM' : 'CK') + '</td><td>'
+                            + (hopdong.HopDongs[i].IsTaoMoi == true ? 'Tạo mới' : 'Tạo lập') + '</td><td>'
+                            + hopdong.HopDongs[i].SoTien + '</td><td>'
+                            + (hopdong.HopDongs[i].NgayThanhToan != null ? (new Date(hopdong.HopDongs[i].NgayThanhToan).getDate() + '/' + (new Date(hopdong.HopDongs[i].NgayThanhToan).getMonth() + 1) + '/' + new Date(hopdong.HopDongs[i].NgayThanhToan).getFullYear()) : 'Chưa thanh toán') + '</td><td>'
+                            + hopdong.HopDongs[i].SoNam +' năm</td></tr>');
+                    }
+                }
+                else {
+                    $('#hopdong').append('<tr><td>Không có dữ liệu</td></tr>');
+                }
+            }
+            
+                
+        })
+    }
+</script>

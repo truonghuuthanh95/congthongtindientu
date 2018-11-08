@@ -15,6 +15,7 @@ namespace CongThongTinDienTu.Models.DAO
             Schools = new HashSet<School>();
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         [StringLength(50)]

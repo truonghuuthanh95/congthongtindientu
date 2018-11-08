@@ -8,7 +8,7 @@ namespace CongThongTinDienTu.Models.DAO
     public partial class CongThongTinDienTuDB : DbContext
     {
         public CongThongTinDienTuDB()
-            : base("name=CongThongTinDienTuDB3")
+            : base("name=CongThongTinDienTuDB")
         {
             this.Configuration.LazyLoadingEnabled = false;
             this.Configuration.ProxyCreationEnabled = false;
@@ -24,7 +24,9 @@ namespace CongThongTinDienTu.Models.DAO
         public virtual DbSet<NhaCungCap> NhaCungCaps { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<School> Schools { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Ward> Wards { get; set; }
+        public virtual DbSet<SchoolTMP> SchoolTMPs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

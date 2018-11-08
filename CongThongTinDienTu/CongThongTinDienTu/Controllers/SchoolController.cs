@@ -75,10 +75,9 @@ namespace CongThongTinDienTu.Controllers
         public ActionResult GetSchoolsByDistrictAndCapHocWithDaTaoLapAndChuaGiaHanThisYear(int districtId, int captruongId)
         {
             List<School> schools = schoolRepository.GetSchoolsByDistrictAndCapHoc(districtId, captruongId).Where(s => s.IsDaTaoMoi == true).ToList();
-            List<School> schoolDaGiaHan = hopDongRepository.GetHopDongsByYear(DateTime.Now.Year).Select(s => s.School).ToList();
-
-            List<School> schoolChuaGiaHan = schools.Where(s => !schoolDaGiaHan.Any(s1 => s.Id == s1.Id)).ToList();                      
-            var schoolJson = JsonConvert.SerializeObject(schoolChuaGiaHan,
+            //List<School> schoolDaGiaHan = hopDongRepository.GetHopDongsByYear(DateTime.Now.Year).Select(s => s.School).ToList();
+            //List<School> schoolChuaGiaHan = schools.Where(s => !schoolDaGiaHan.Any(s1 => s.Id == s1.Id)).ToList();                      
+            var schoolJson = JsonConvert.SerializeObject(schools,
             Formatting.None,
             new JsonSerializerSettings()
             {
@@ -91,7 +90,7 @@ namespace CongThongTinDienTu.Controllers
         public ActionResult GetSchoolByDistrictAnCapTruongWithIsTaoLapFalse(int districtId, int captruongId)
         {
 
-            List<School> schools = schoolRepository.GetSchoolsByDistrictAndCapHocWithIsDaTaoLapFalse(districtId, captruongId);
+            List<School> schools = schoolRepository.GetSchoolsByDistrictAndCapHoc(districtId, captruongId);
             var schoolJson = JsonConvert.SerializeObject(schools,
             Formatting.None,
             new JsonSerializerSettings()
