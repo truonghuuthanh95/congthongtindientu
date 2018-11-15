@@ -166,14 +166,11 @@ namespace CongThongTinDienTu.Controllers
         [HttpGet]
         public ActionResult HopDongTruong(int schoolId)
         {
-            Account account = (Account)Session[CommonConstant.USER_SESSION];
-            if (account == null)
-            {
-                return Json(new ReturnFormat(403, "Access denied", null), JsonRequestBehavior.AllowGet);
-            }
-            string MaTruong = schoolRepository.GetSchoolById(schoolId).MaTruong;
+            
+            //School school = schoolRepository.GetSchoolById(schoolId);            
             List<HopDong> HopDongs = hopDongRepository.GetHopDongsBySchoolId(schoolId);
-            var hopDongJson = JsonConvert.SerializeObject(new KiemTraTruongDTO(MaTruong, HopDongs),
+            KiemTraTruongDTO kiemTraTruongDTO = new KiemTraTruongDTO("000000", HopDongs);
+            var hopDongJson = JsonConvert.SerializeObject(kiemTraTruongDTO,
            Formatting.None,
            new JsonSerializerSettings()
            {
