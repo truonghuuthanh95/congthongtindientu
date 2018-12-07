@@ -207,6 +207,12 @@
                     $('#preloader').hide();
                     $('#submit').removeClass('disabled');
                 }
+                else if (data.StatusCode == 403 && status == 'success') {
+                    window.location.replace("/login");
+                }
+                else {
+                    alert("Có lỗi xảy ra");
+                }
             })
         }
 

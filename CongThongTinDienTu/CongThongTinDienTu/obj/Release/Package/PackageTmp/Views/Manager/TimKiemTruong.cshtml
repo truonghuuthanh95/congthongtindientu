@@ -66,7 +66,7 @@
                             @{
                                 foreach (var item in ViewBag.Schools)
                                 {
-                                    <option value="@item.Id">@item.TenTruong</option>
+                                    <option value="@item.Id">@item.MaTruong - @item.TenTruong</option>
                                 }
                             }
                         </select>
@@ -124,7 +124,7 @@
             var school = JSON.parse(data.Results);
             $('#tentruong').children().remove().end();
             for (var i = 0; i < school.length; i++) {
-                $('#tentruong').append('<option value=' + school[i].Id + '>' + school[i].TenTruong + '</option>')
+                $('#tentruong').append('<option value=' + school[i].Id + '>' + school[i] + ' - ' + school[i] + ' - ' + school[i].TenTruong + '</option>')
             }
         })
     })
@@ -135,7 +135,7 @@
             }
             else {
                 hopdong = JSON.parse(data.Results)
-                $('#matruong').text(hopdong.MaTruong + ' - ' + $('#tentruong :selected').text())
+                $('#matruong').text($('#tentruong :selected').text())
                 $("#hopdong > tbody").html("");
                 if (hopdong.HopDongs.length > 0) {
                     for (var i = 0; i < hopdong.HopDongs.length; i++) {
@@ -144,7 +144,7 @@
                             + (new Date(hopdong.HopDongs[i].NgayKiHD).getDate() + '/' + (new Date(hopdong.HopDongs[i].NgayKiHD).getMonth() + 1) + '/' + new Date(hopdong.HopDongs[i].NgayKiHD).getFullYear()) + '</td><td>'
                             + (new Date(hopdong.HopDongs[i].NgayHieuLucHD).getDate() + '/' + (new Date(hopdong.HopDongs[i].NgayHieuLucHD).getMonth() + 1) + '/' + new Date(hopdong.HopDongs[i].NgayHieuLucHD).getFullYear()) + '</td><td>'
                             + (hopdong.HopDongs[i].IsThanhToanBangTienMat == true ? 'TM' : 'CK') + '</td><td>'
-                            + (hopdong.HopDongs[i].IsTaoMoi == true ? 'Tạo mới' : 'Tạo lập') + '</td><td>'
+                            + (hopdong.HopDongs[i].IsTaoMoi == true ? 'Tạo mới' : 'Duy trì') + '</td><td>'
                             + hopdong.HopDongs[i].SoTien + '</td><td>'
                             + (hopdong.HopDongs[i].NgayThanhToan != null ? (new Date(hopdong.HopDongs[i].NgayThanhToan).getDate() + '/' + (new Date(hopdong.HopDongs[i].NgayThanhToan).getMonth() + 1) + '/' + new Date(hopdong.HopDongs[i].NgayThanhToan).getFullYear()) : 'Chưa thanh toán') + '</td><td>'
                             + hopdong.HopDongs[i].SoNam +' năm</td></tr>');

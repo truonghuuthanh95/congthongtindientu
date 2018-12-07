@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -177,6 +178,20 @@ namespace CongThongTinDienTu.Controllers
                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
            });
             return Json(new ReturnFormat(200, "success", hopDongJson), JsonRequestBehavior.AllowGet);
+        }
+        [Route("downloadhopdong/{year}")]
+        [HttpGet]
+        public async Task<ActionResult> DownloadHopDong(int year)
+        {
+            Account account = (Account)Session[CommonConstant.USER_SESSION];
+            if (account == null)
+            {
+                return RedirectToRoute("login");
+            }
+            List<HopDong> HopDongs = hopDongRepository.GetHopDongsByYear(year);
+            string filePath = System.Web.HttpContext.Current.Server.MapPath("~/Utils/ds-hopdongcttdt.xlsx");
+            await Utils.ExportExcel.GenerateXLSHopDong(HopDongs, filePath);          
+            return File(filePath, "application/vnd.ms-excel", "ds-hopdongcttdt.xlsx");
         }
     }
 }

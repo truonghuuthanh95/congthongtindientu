@@ -30,23 +30,25 @@
                         <label for="exampleInputName2">Năm kí hợp đồng</label>
                         <select class="form-control" id="namkihopdong" onchange="location = this.value;">
                             @{
-                                for (int i = 2016; i < DateTime.Now.Year + 1; i++)
-                                {
-                                    if (i == ViewBag.Year)
-                                    {
-                                        <option value="/quanly/danhsachhopdong/@i" selected>@i</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="/quanly/danhsachhopdong/@i">@i</option>
-                                    }
+                for (int i = 2016; i < DateTime.Now.Year + 1; i++)
+                {
+                    if (i == ViewBag.Year)
+                    {
+                        <option value="/quanly/danhsachhopdong/@i" selected>@i</option>
+    }
+    else
+    {
+                <option value="/quanly/danhsachhopdong/@i">@i</option>
+}
 
-                                }
+}
                             }
 
                         </select>
                     </div>
-
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" onclick="downloadexcel();"><span class="glyphicon glyphicon-download"></span> Xuất Excel</button>                        
+                    </div>
                 </form>
             </div>
         </div>
@@ -147,6 +149,27 @@ else
                 <h4 class="modal-title" id="myModalLabel">Cập nhật ngày đóng tiền</h4>
             </div>
             <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Ngày kí HĐ</label>
+                        <input type="text" class="form-control datepicker" id="ngaykihd">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Ngày hiệu lực</label>
+                        <input type="text" class="form-control datepicker" id="ngayhieuluc">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Ngày đóng tiền</label>
+                        <input type="text" class="form-control datepicker" id="ngaydong">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">HTTT</label>
+                        <select class="form-control" id="hinhthucthanhtoan">
+                            <option value="true">Tiền mặt</option>
+                            <option value="false">Chuyển khoản</option>
+                        </select>
+                    </div>                   
+                </form>
                 <div class="text-center">
                     <form class="form-inline">
                         <input hidden id="idHopDong" />
@@ -173,52 +196,55 @@ else
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        $('#danhsachhopdong').DataTable({
-            initComplete: function () {
-                this.api().columns().every(function () {
-                    var column = this;
-                    var select = $('<select><option value=""></option></select>')
-                        .appendTo($(column.footer()).empty())
-                        .on('change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+    function downloadexcel() {        
+        window.location.href = '/quanly/downloadhopdong/@ViewBag.Year';    
+}
+$(document).ready(function () {
+    $('#danhsachhopdong').DataTable({
+        initComplete: function () {
+            this.api().columns().every(function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo($(column.footer()).empty())
+                    .on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
 
-                            column
-                                .search(val ? '^' + val + '$' : '', true, false)
-                                .draw();
-                        });
-
-                    column.data().unique().sort().each(function (d, j) {
-                        select.append('<option value="' + d + '">' + d + '</option>')
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
                     });
+
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
                 });
+            });
+        }
+    });
+    $('.datepicker').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+
+    });
+})
+function setIdToIdHopDong(id) {
+    $('#idHopDong').val(id);
+}
+function capNhatNgayDongTien() {
+    if ($('#ngaydong').val() == '') {
+        $('#errorCapNhatNgayDong').text('Vui lòng chọn ngày');
+    }
+    else {
+        $.get("/quanly/capnhatngaydongtien/" + $('#idHopDong').val().trim() + "/" + $('#ngaydong').val().trim() + '/' + $('#hinhthucthanhtoan').val(), function (data, status) {
+            if (data.StatusCode == 200) {
+                window.location.reload();
             }
-        });
-        $('.datepicker').datepicker({
-            format: 'dd-mm-yyyy',
-            autoclose: true,
-
-        });
-    })
-    function setIdToIdHopDong(id) {
-        $('#idHopDong').val(id);
+            else {
+                $('#errorCapNhatNgayDong').text('Có lỗi xảy ra');
+            }
+        })
     }
-    function capNhatNgayDongTien() {
-        if ($('#ngaydong').val() == '') {
-            $('#errorCapNhatNgayDong').text('Vui lòng chọn ngày');
-        }
-        else {
-            $.get("/quanly/capnhatngaydongtien/" + $('#idHopDong').val().trim() + "/" + $('#ngaydong').val().trim() + '/' + $('#hinhthucthanhtoan').val(), function (data, status) {
-                if (data.StatusCode == 200) {
-                    window.location.reload();
-                }
-                else {
-                    $('#errorCapNhatNgayDong').text('Có lỗi xảy ra');
-                }
-            })
-        }
 
-    }
+}
 </script>
