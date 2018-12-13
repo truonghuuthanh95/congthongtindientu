@@ -123,9 +123,9 @@ namespace CongThongTinDienTu.Controllers
             ViewBag.Year = year;
             return View(hopDongs);
         }
-        [Route("capnhatngaydongtien/{id}/{ngaydongtien}/{httt}")]
-        [HttpGet]
-        public ActionResult CapNhatNgayDongTien(int id, string ngayDongTien, bool httt)
+        [Route("capnhathopdong")]
+        [HttpPost]
+        public ActionResult CapNhatNgayDongTien(int id, string ngayDongTien, string httt, string ngayKiHD, string ngayHieuLuc)
         {
             Account account = (Account)Session[CommonConstant.USER_SESSION];
             if (account == null)
@@ -137,8 +137,25 @@ namespace CongThongTinDienTu.Controllers
             {
                 return Json(new ReturnFormat(404, "Not found", null), JsonRequestBehavior.AllowGet);
             }
-            hopDong.NgayThanhToan =  DateTime.ParseExact(ngayDongTien, "dd-MM-yyyy", null);
-            hopDong.IsThanhToanBangTienMat = httt;
+            if (httt == "no")
+            {
+                hopDong.IsThanhToanBangTienMat = null;
+            }
+            else
+            {
+                hopDong.IsThanhToanBangTienMat = bool.Parse(httt);
+            }
+            if (ngayDongTien != null && ngayDongTien != "")
+            {
+                hopDong.NgayThanhToan = DateTime.ParseExact(ngayDongTien, "dd-MM-yyyy", null);
+            }
+            else
+            {
+                hopDong.NgayThanhToan = null;
+            }
+            
+            hopDong.NgayHieuLucHD = DateTime.ParseExact(ngayHieuLuc, "dd-MM-yyyy", null);
+            hopDong.NgayKiHD = DateTime.ParseExact(ngayKiHD, "dd-MM-yyyy", null);
             HopDong hopDongDaCapNhat = hopDongRepository.CapNhatHopDong(hopDong);
             if (hopDongDaCapNhat == null)
             {
@@ -167,17 +184,21 @@ namespace CongThongTinDienTu.Controllers
         [HttpGet]
         public ActionResult HopDongTruong(int schoolId)
         {
+
+            //School school = schoolRepository.GetSchoolById(schoolId);
+            using (var db = new CongThongTinDienTuDB())
+            {
+                List<HopDong> HopDongs = db.HopDongs.Where(s => s.SchoolId == schoolId).ToList();
+                KiemTraTruongDTO kiemTraTruongDTO = new KiemTraTruongDTO("000000", HopDongs);
+                var hopDongJson = JsonConvert.SerializeObject(kiemTraTruongDTO,
+               Formatting.None,
+               new JsonSerializerSettings()
+               {
+                   ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+               });
+                return Json(new ReturnFormat(200, "success", hopDongJson), JsonRequestBehavior.AllowGet);
+            }           
             
-            //School school = schoolRepository.GetSchoolById(schoolId);            
-            List<HopDong> HopDongs = hopDongRepository.GetHopDongsBySchoolId(schoolId);
-            KiemTraTruongDTO kiemTraTruongDTO = new KiemTraTruongDTO("000000", HopDongs);
-            var hopDongJson = JsonConvert.SerializeObject(kiemTraTruongDTO,
-           Formatting.None,
-           new JsonSerializerSettings()
-           {
-               ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-           });
-            return Json(new ReturnFormat(200, "success", hopDongJson), JsonRequestBehavior.AllowGet);
         }
         [Route("downloadhopdong/{year}")]
         [HttpGet]
@@ -192,6 +213,24 @@ namespace CongThongTinDienTu.Controllers
             string filePath = System.Web.HttpContext.Current.Server.MapPath("~/Utils/ds-hopdongcttdt.xlsx");
             await Utils.ExportExcel.GenerateXLSHopDong(HopDongs, filePath);          
             return File(filePath, "application/vnd.ms-excel", "ds-hopdongcttdt.xlsx");
+        }
+        [Route("gethopdongbyid/{id}")]
+        [HttpGet]
+        public ActionResult GetHopDingById(int id)
+        {
+            using (var db = new CongThongTinDienTuDB())
+            {
+                HopDong hopDong = db.HopDongs.Find(id);
+                var hopDongJson = JsonConvert.SerializeObject(hopDong,
+           Formatting.None,
+           new JsonSerializerSettings()
+           {
+               ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+           });
+                return Json(new ReturnFormat(200, "success", hopDongJson), JsonRequestBehavior.AllowGet);
+            }
+             
+            
         }
     }
 }
