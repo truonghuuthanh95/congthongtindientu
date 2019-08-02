@@ -18,7 +18,7 @@ namespace CongThongTinDienTu.Repositories.Implements
 
         public Account CheckUsernamePassword(string username, string password)
         {
-            Account account = _db.Accounts.Where(s => s.Username.Trim() == username.Trim() && s.Password.Trim() == password.Trim()).SingleOrDefault();
+            Account account = _db.Accounts.Include("DVQL").Where(s => s.Username.Trim() == username.Trim() && s.Password.Trim() == password.Trim()).SingleOrDefault();
             if (account != null)
             {
                 account.Username = "";

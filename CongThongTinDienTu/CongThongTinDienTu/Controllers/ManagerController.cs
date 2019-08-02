@@ -1,5 +1,6 @@
 ﻿using CongThongTinDienTu.Models.DAO;
 using CongThongTinDienTu.Models.DTO;
+using CongThongTinDienTu.Repositories.Implements;
 using CongThongTinDienTu.Repositories.Interfaces;
 using CongThongTinDienTu.Utils;
 using Newtonsoft.Json;
@@ -19,14 +20,19 @@ namespace CongThongTinDienTu.Controllers
         ISchoolRepository schoolRepository;
         ICapTruongRepository capTruongRepository;
         IDistrictRepository districtRepository;
+        IAccountPermissionRepository accountPermissionRepository;
 
-        public ManagerController(IHopDongRepository hopDongRepository, ISchoolRepository schoolRepository, ICapTruongRepository capTruongRepository, IDistrictRepository districtRepository)
+        public ManagerController(IHopDongRepository hopDongRepository, ISchoolRepository schoolRepository, ICapTruongRepository capTruongRepository, IDistrictRepository districtRepository, IAccountPermissionRepository accountPermissionRepository)
         {
             this.hopDongRepository = hopDongRepository;
             this.schoolRepository = schoolRepository;
             this.capTruongRepository = capTruongRepository;
             this.districtRepository = districtRepository;
+            this.accountPermissionRepository = accountPermissionRepository;
         }
+
+
+
         // GET: Manager
         [Route("")]
         [HttpGet]
@@ -36,6 +42,13 @@ namespace CongThongTinDienTu.Controllers
             if (account == null)
             {
                 return RedirectToRoute("login");
+            }
+            if (account.DVQLId != 25)
+            {
+                int SoLuongChuaCoCongThongTin = hopDongRepository.GetSoLuongChuaCoCongThongTin(account.DVQLId);
+                ViewBag.SchoolsChuaCoCongThongTin = SoLuongChuaCoCongThongTin;
+                ViewBag.SchoolsChuaDongTien = hopDongRepository.GetSoLuongChuaThanhToan(account.DVQLId);
+                ViewBag.SchoolsChuaGiaHan = hopDongRepository.GetSoLuongChuaGiaHan(account.DVQLId);
             }
             return View();
         }
@@ -49,6 +62,13 @@ namespace CongThongTinDienTu.Controllers
             {
                 return RedirectToRoute("login");
             }
+            int permissionId = 2;
+            
+            List<Account_Permission> account_Permissions = accountPermissionRepository.GetAccount_PermissionsByAccountId(account.Id);
+            if (account_Permissions.Where(s => s.PermissionId == permissionId).SingleOrDefault() == null)
+            {
+                return RedirectToRoute("login");
+            }
             List<District> districts = districtRepository.GetDistrictsByProvinceId(79);
             List<CapTruong> captruongs = capTruongRepository.GetCapTruongs();
             List<School> schools = schoolRepository.GetSchoolsByDistrictAndCapHoc(760, 1).Where(s => s.IsDaTaoMoi == true).ToList();
@@ -56,6 +76,19 @@ namespace CongThongTinDienTu.Controllers
             //List<School> schoolChuaGiaHan = schools.Where(s => !schoolDaGiaHan.Any(s1 => s.Id == s1.Id)).ToList();
             HopDongOneViewModel hopDongOneViewModel = new HopDongOneViewModel(districts, captruongs, schools);
             return View(hopDongOneViewModel);
+        }
+        public int GetMaxSoHopDong(int year)
+        {
+            using (var _db = new CongThongTinDienTuDB())
+            {
+                var max = _db.HopDongs.Where(s => s.NgayHieuLucHD.Value.Year == year).Max(s => s.MaHopDong);
+                if (max == null)
+                {
+                    return 1;
+                }
+                return Convert.ToInt32(max);
+            }
+            
         }
         [Route("themmoihopdonggiahan")]
         [HttpPost]
@@ -66,7 +99,42 @@ namespace CongThongTinDienTu.Controllers
             {
                 return Json(new ReturnFormat(403, "Access Denied", null), JsonRequestBehavior.AllowGet);
             }
-            HopDong hopDong = hopDongRepository.TaoMoiHopDongDuyTri(hopDongDTO, account.Id);
+            int permissionId = 2;
+
+            List<Account_Permission> account_Permissions = accountPermissionRepository.GetAccount_PermissionsByAccountId(account.Id);
+            if (account_Permissions.Where(s => s.PermissionId == permissionId).SingleOrDefault() == null)
+            {
+                return Json(new ReturnFormat(403, "Access Denied", null), JsonRequestBehavior.AllowGet);
+            }
+            
+            HopDong hopDong = new HopDong();
+            using (var _db = new CongThongTinDienTuDB())
+            {               
+                hopDong.CreatedAt = DateTime.Now;
+                hopDong.NguoiTiepNhan = account.Id;
+                hopDong.GhiChu = hopDongDTO.GhiChu;
+                hopDong.NgayHieuLucHD = hopDongDTO.NgayHieuLucHD;
+                hopDong.NgayKiHD = hopDongDTO.NgayKiHD;
+                hopDong.SchoolId = hopDongDTO.SchoolId;
+                hopDong.SoNam = hopDongDTO.SoNam;
+                hopDong.IsThanhToanBangTienMat = hopDongDTO.IsThanhToanBangTienMat;
+                hopDong.NgayThanhToan = hopDongDTO.NgayThanhToan;
+                hopDong.IsTaoMoi = false;
+                hopDong.SoTien = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["TienDuyTry"]) * hopDongDTO.SoNam;
+                int checkNumThisYear = (hopDongDTO.NgayHieuLucHD.Year % 100) * 10000;
+                int maxSoHopdong = GetMaxSoHopDong(hopDongDTO.NgayHieuLucHD.Year);
+                if (checkNumThisYear > maxSoHopdong)
+                {
+                    hopDong.MaHopDong = checkNumThisYear + 1;
+                }
+                else
+                {
+                    hopDong.MaHopDong = maxSoHopdong + 1;
+                }
+                _db.HopDongs.Add(hopDong);
+                _db.SaveChanges();
+            }           
+            //HopDong hopDong = hopDongRepository.TaoMoiHopDongDuyTri(hopDongDTO, account.Id);
             var hopDongJson = JsonConvert.SerializeObject(hopDong,
            Formatting.None,
            new JsonSerializerSettings()
@@ -81,6 +149,13 @@ namespace CongThongTinDienTu.Controllers
         {
             Account account = (Account)Session[CommonConstant.USER_SESSION];
             if (account == null)
+            {
+                return RedirectToRoute("login");
+            }
+            int permissionId = 1;
+
+            List<Account_Permission> account_Permissions = accountPermissionRepository.GetAccount_PermissionsByAccountId(account.Id);
+            if (account_Permissions.Where(s => s.PermissionId == permissionId).SingleOrDefault() == null)
             {
                 return RedirectToRoute("login");
             }
@@ -100,7 +175,15 @@ namespace CongThongTinDienTu.Controllers
             {
                 return Json(new ReturnFormat(403, "Access Denied", null), JsonRequestBehavior.AllowGet);
             }
+            int permissionId = 1;
+
+            List<Account_Permission> account_Permissions = accountPermissionRepository.GetAccount_PermissionsByAccountId(account.Id);
+            if (account_Permissions.Where(s => s.PermissionId == permissionId).SingleOrDefault() == null)
+            {
+                return Json(new ReturnFormat(403, "Access Denied", null), JsonRequestBehavior.AllowGet);
+            }
             hopDongDTO.SoNam = 1;
+
             HopDong hopDong = hopDongRepository.TaoMoiHopDongTaoLap(hopDongDTO, account.Id);
             var hopDongJson = JsonConvert.SerializeObject(hopDong,
            Formatting.None,
@@ -119,6 +202,13 @@ namespace CongThongTinDienTu.Controllers
             {
                 return RedirectToRoute("login");
             }
+            int permissionId = 3;
+
+            List<Account_Permission> account_Permissions = accountPermissionRepository.GetAccount_PermissionsByAccountId(account.Id);
+            if (account_Permissions.Where(s => s.PermissionId == permissionId).SingleOrDefault() == null)
+            {
+                return RedirectToRoute("login");
+            }
             List<HopDong> hopDongs = hopDongRepository.GetHopDongsByYear(year);
             ViewBag.Year = year;
             return View(hopDongs);
@@ -130,7 +220,15 @@ namespace CongThongTinDienTu.Controllers
             Account account = (Account)Session[CommonConstant.USER_SESSION];
             if (account == null)
             {
-                return Json(new ReturnFormat(403, "Access denied", null), JsonRequestBehavior.AllowGet);
+                return Json(new ReturnFormat(403, "Access Denied", null), JsonRequestBehavior.AllowGet);
+            }
+            //cap nhat hop dong
+            int permissionId = 5;
+
+            List<Account_Permission> account_Permissions = accountPermissionRepository.GetAccount_PermissionsByAccountId(account.Id);
+            if (account_Permissions.Where(s => s.PermissionId == permissionId).SingleOrDefault() == null)
+            {
+                return Json(new ReturnFormat(403, "Access Denied", null), JsonRequestBehavior.AllowGet);
             }
             HopDong hopDong = hopDongRepository.GetHopDongById(id);
             if (hopDong == null)
@@ -169,6 +267,13 @@ namespace CongThongTinDienTu.Controllers
         {
             Account account = (Account)Session[CommonConstant.USER_SESSION];
             if (account == null)
+            {
+                return RedirectToRoute("login");
+            }
+            int permissionId = 6;
+
+            List<Account_Permission> account_Permissions = accountPermissionRepository.GetAccount_PermissionsByAccountId(account.Id);
+            if (account_Permissions.Where(s => s.PermissionId == permissionId).SingleOrDefault() == null)
             {
                 return RedirectToRoute("login");
             }

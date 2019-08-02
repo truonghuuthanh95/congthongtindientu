@@ -13,11 +13,15 @@ namespace CongThongTinDienTu.Controllers
     public class AccountController : Controller
     {
         IAccountRepository accountRepository;
+        IAccountPermissionRepository accountPermissionRepository;
 
-        public AccountController(IAccountRepository accountRepository)
+        public AccountController(IAccountRepository accountRepository, IAccountPermissionRepository accountPermissionRepository)
         {
             this.accountRepository = accountRepository;
+            this.accountPermissionRepository = accountPermissionRepository;
         }
+
+
 
         // GET: Account
         [Route("login", Name ="login")]
@@ -42,6 +46,8 @@ namespace CongThongTinDienTu.Controllers
                 return Json(new ReturnFormat(403, "Tài khoản hiện đang khóa", null));
             }
             Session.Add(CommonConstant.USER_SESSION, account);
+            List<Account_Permission> account_Permission = accountPermissionRepository.GetAccount_PermissionsByAccountId(account.Id);
+            Session.Add(CommonConstant.USER_PERMISSION_SESSION, account_Permission);
             return Json(new ReturnFormat(200, "Success", null));
         }
         [Route("logout")]

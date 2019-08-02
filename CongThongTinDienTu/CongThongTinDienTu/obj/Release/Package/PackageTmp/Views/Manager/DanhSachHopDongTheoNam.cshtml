@@ -186,6 +186,7 @@
 }
 $(document).ready(function () {
     $('#danhsachhopdong').DataTable({
+        "pageLength": 100,
         initComplete: function () {
             this.api().columns().every(function () {
                 var column = this;
@@ -217,8 +218,7 @@ function setIdToIdHopDong(id) {
     $('#idHopDong').val(id);
     $.get("/quanly/gethopdongbyid/" + id, function (data, status) {
         var hopdong = JSON.parse(data.Results);
-        $('#ngaydong').val(hopdong.NgayThanhToan != null ? moment(hopdong.NgayThanhToan).format('DD-MM-YYYY') : '');
-        debugger
+        $('#ngaydong').datepicker('setDate', hopdong.NgayThanhToan != null ? moment(hopdong.NgayThanhToan).format('DD-MM-YYYY') : '');       
         if (hopdong.IsThanhToanBangTienMat == true) {
             $('#hinhthucthanhtoan').val('true');
         }
@@ -228,9 +228,8 @@ function setIdToIdHopDong(id) {
         else {
             $('#hinhthucthanhtoan').val('no');
         }
-
-        $('#ngaykihd').val(moment(hopdong.NgayKiHD).format('DD-MM-YYYY'));
-        $('#ngayhieuluc').val(moment(hopdong.NgayHieuLucHD).format('DD-MM-YYYY'));
+        $('#ngaykihd').datepicker('setDate', moment(hopdong.NgayKiHD).format('DD-MM-YYYY'));
+        $('#ngayhieuluc').datepicker('setDate', moment(hopdong.NgayHieuLucHD).format('DD-MM-YYYY'));       
     });
 }
 function capNhatNgayDongTien() {

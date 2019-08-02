@@ -12,6 +12,7 @@ namespace CongThongTinDienTu.Models.DAO
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DVQL()
         {
+            Accounts = new HashSet<Account>();
             Schools = new HashSet<School>();
         }
 
@@ -27,6 +28,9 @@ namespace CongThongTinDienTu.Models.DAO
         public string TenDayDu { get; set; }
 
         public bool? IsActive { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Account> Accounts { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<School> Schools { get; set; }

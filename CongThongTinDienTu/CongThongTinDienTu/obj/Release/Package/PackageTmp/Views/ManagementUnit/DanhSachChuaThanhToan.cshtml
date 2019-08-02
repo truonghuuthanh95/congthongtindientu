@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "DanhSachChuaThanhToan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <em class="fa fa-home"></em>
+            </a>
+        </li>
+        <li class="active">Danh sách trường chưa thanh toán</li>
+    </ol>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Danh sách trường chưa thanh toán</h1>
+    </div>
+</div>
+<div class="col-sm-12">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên trường</th>
+                        <th>Cấp trường</th>
+                        <th>Ngày ký</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int index = 1;
+                        foreach (var item in ViewBag.ChuaDongTiens)
+                        {
+                            <tr>
+                                <td>@index</td>
+                                <td>@item.School.TenTruong</td>
+                                <td>@item.School.CapTruong.TenDayDu</td>
+                                <td>@item.NgayKiHD.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                            index++;
+                        }
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

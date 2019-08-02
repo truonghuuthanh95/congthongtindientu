@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Danh sách hợp đồng";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    CongThongTinDienTu.Models.DAO.Account account = (CongThongTinDienTu.Models.DAO.Account)Session[CongThongTinDienTu.Utils.CommonConstant.USER_SESSION];
 }
 
 <div class="row">
@@ -16,7 +17,7 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Hợp đồng @ViewBag.Year</h1>
+        <h1 class="page-header">Hợp đồng @ViewBag.Year @account.DVQL.TenDayDu</h1>
     </div>
 </div>
 
@@ -34,11 +35,11 @@
                                 {
                                     if (i == ViewBag.Year)
                                     {
-                                        <option value="/quanly/danhsachhopdong/@i" selected>@i</option>
+                                        <option value="/pgd/danhsachhopdong/@i" selected>@i</option>
                                     }
                                     else
                                     {
-                                        <option value="/quanly/danhsachhopdong/@i">@i</option>
+                                        <option value="/pgd/danhsachhopdong/@i">@i</option>
                                     }
 
                                 }
@@ -67,7 +68,7 @@
                     <th>Số năm</th>
                     <th>Số Tiền</th>
                     <th>Ngày Đóng</th>
-                    <th></th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -116,10 +117,9 @@
                                 }
                                 else
                                 {
-                                    <td></td>
+                                    <td style="color: red">Chưa thanh toán</td>
                                 }
-                            }
-                            <td><button class="btn btn-sm btn-primary" onclick="setIdToIdHopDong(@item.Id);" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-edit"></span></button></td>
+                            }                     
                         </tr>
                     }
                 }
@@ -139,45 +139,6 @@
                 </tr>
             </tfoot>
         </table>
-    </div>
-</div>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Cập nhật ngày đóng tiền</h4>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <input hidden id="idHopDong" />
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Ngày kí HĐ</label>
-                        <input type="text" class="form-control datepicker" id="ngaykihd" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Ngày hiệu lực</label>
-                        <input type="text" class="form-control datepicker" id="ngayhieuluc" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Ngày đóng tiền</label>
-                        <input type="text" class="form-control datepicker" id="ngaydong" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">HTTT</label>
-                        <select class="form-control" id="hinhthucthanhtoan">
-                            <option value="true">Tiền mặt</option>
-                            <option value="false">Chuyển khoản</option>
-                            <option value="no">Không chọn</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" onclick="capNhatNgayDongTien();">Cập nhật</button>
-            </div>
-        </div>
     </div>
 </div>
 <script>
@@ -214,42 +175,4 @@ $(document).ready(function () {
 
     });
 })
-function setIdToIdHopDong(id) {
-    $('#idHopDong').val(id);
-    $.get("/quanly/gethopdongbyid/" + id, function (data, status) {
-        var hopdong = JSON.parse(data.Results);
-        $('#ngaydong').datepicker('setDate', hopdong.NgayThanhToan != null ? moment(hopdong.NgayThanhToan).format('DD-MM-YYYY') : '');       
-        if (hopdong.IsThanhToanBangTienMat == true) {
-            $('#hinhthucthanhtoan').val('true');
-        }
-        else if (hopdong.IsThanhToanBangTienMat == false) {
-            $('#hinhthucthanhtoan').val('false');
-        }
-        else {
-            $('#hinhthucthanhtoan').val('no');
-        }
-        $('#ngaykihd').datepicker('setDate', moment(hopdong.NgayKiHD).format('DD-MM-YYYY'));
-        $('#ngayhieuluc').datepicker('setDate', moment(hopdong.NgayHieuLucHD).format('DD-MM-YYYY'));       
-    });
-}
-function capNhatNgayDongTien() {
-    //if ($('#ngaydong').val() == '') {
-    //    $('#errorCapNhatNgayDong').text('Vui lòng chọn ngày');
-
-    //}   
-        $.post("/quanly/capnhathopdong", {
-            id: $('#idHopDong').val(),
-            ngayDongTien: $('#ngaydong').val() == '' ? null : $('#ngaydong').val(),
-            httt: $('#hinhthucthanhtoan').val(),
-            ngayKiHD: $('#ngaykihd').val(),
-            ngayHieuLuc: $('#ngayhieuluc').val()
-        }, function (data, status) {
-            if (data.StatusCode == 200) {
-                window.location.reload();
-            }
-            else {
-                $('#errorCapNhatNgayDong').text('Có lỗi xảy ra');
-            }
-        })
-    }
 </script>

@@ -28,6 +28,7 @@ namespace CongThongTinDienTu.App_Start
             container.RegisterType<IHopDongRepository, HopDongRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ICapTruongRepository, CapTruongRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<IAccountRepository, AccountRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<IAccountPermissionRepository, AccountPermissionRepository>(new HierarchicalLifetimeManager());
         }
     }
 }

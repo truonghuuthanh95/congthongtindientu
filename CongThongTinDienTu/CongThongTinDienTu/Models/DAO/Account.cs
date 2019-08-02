@@ -12,6 +12,7 @@ namespace CongThongTinDienTu.Models.DAO
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Account()
         {
+            Account_Permission = new HashSet<Account_Permission>();
             HopDongs = new HashSet<HopDong>();
         }
 
@@ -30,6 +31,13 @@ namespace CongThongTinDienTu.Models.DAO
         public DateTime? UpdatedAt { get; set; }
 
         public bool? IsActive { get; set; }
+
+        public int? DVQLId { get; set; }
+
+        public virtual DVQL DVQL { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Account_Permission> Account_Permission { get; set; }
 
         public virtual Role Role { get; set; }
 

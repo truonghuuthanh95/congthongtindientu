@@ -10,11 +10,12 @@ namespace CongThongTinDienTu.Models.DAO
         public CongThongTinDienTuDB()
             : base("name=CongThongTinDienTuDB")
         {
-            this.Configuration.LazyLoadingEnabled = false;
             this.Configuration.ProxyCreationEnabled = false;
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<Account_Permission> Account_Permission { get; set; }
         public virtual DbSet<CapTruong> CapTruongs { get; set; }
         public virtual DbSet<District> Districts { get; set; }
         public virtual DbSet<DVQL> DVQLs { get; set; }
@@ -22,9 +23,9 @@ namespace CongThongTinDienTu.Models.DAO
         public virtual DbSet<LoaiHinh> LoaiHinhs { get; set; }
         public virtual DbSet<LogEmail> LogEmails { get; set; }
         public virtual DbSet<NhaCungCap> NhaCungCaps { get; set; }
+        public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<School> Schools { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Ward> Wards { get; set; }
         public virtual DbSet<SchoolTMP> SchoolTMPs { get; set; }
 

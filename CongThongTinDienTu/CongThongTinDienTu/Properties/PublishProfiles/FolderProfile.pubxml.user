@@ -28,10 +28,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2018 19:15:06</publishTime>
     </File>
     <File Include="bin/CongThongTinDienTu.dll">
-      <publishTime>12/13/2018 10:32:56</publishTime>
+      <publishTime>08/01/2019 13:46:07</publishTime>
     </File>
     <File Include="bin/CongThongTinDienTu.pdb">
-      <publishTime>12/13/2018 10:32:56</publishTime>
+      <publishTime>08/01/2019 13:46:07</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>01/04/2017 00:44:16</publishTime>
@@ -477,14 +477,26 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/InHopDong/ThongTinDonVi.cshtml">
       <publishTime>11/07/2018 11:09:01</publishTime>
     </File>
+    <File Include="Views/ManagementUnit/DanhSachChuaLamHopDongGiaHan.cshtml">
+      <publishTime>07/31/2019 14:39:22</publishTime>
+    </File>
+    <File Include="Views/ManagementUnit/DanhSachChuaThanhToan.cshtml">
+      <publishTime>08/01/2019 11:42:43</publishTime>
+    </File>
+    <File Include="Views/ManagementUnit/DanhSachTruongChuaCTTDT.cshtml">
+      <publishTime>07/31/2019 14:35:35</publishTime>
+    </File>
+    <File Include="Views/ManagementUnit/Index.cshtml">
+      <publishTime>06/22/2019 20:53:01</publishTime>
+    </File>
     <File Include="Views/Manager/DanhSachHopDongTheoNam.cshtml">
-      <publishTime>12/13/2018 10:32:27</publishTime>
+      <publishTime>03/07/2019 14:26:24</publishTime>
     </File>
     <File Include="Views/Manager/HopDongTaoLap.cshtml">
       <publishTime>12/04/2018 16:10:05</publishTime>
     </File>
     <File Include="Views/Manager/Index.cshtml">
-      <publishTime>10/12/2018 11:32:41</publishTime>
+      <publishTime>07/31/2019 11:25:09</publishTime>
     </File>
     <File Include="Views/Manager/ThemMoiHopDongGiaHan.cshtml">
       <publishTime>12/04/2018 16:10:00</publishTime>
@@ -496,7 +508,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2018 10:17:02</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>10/31/2018 13:51:15</publishTime>
+      <publishTime>08/01/2019 13:37:37</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>07/31/2018 10:17:02</publishTime>
@@ -505,7 +517,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2018 10:17:02</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/13/2018 09:49:28</publishTime>
+      <publishTime>08/01/2019 13:24:32</publishTime>
     </File>
   </ItemGroup>
 </Project>
