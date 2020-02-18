@@ -80,14 +80,30 @@ namespace CongThongTinDienTu.Repositories.Implements
         }
 
         public List<School> GetSchoolsChuaGiaHan(int? dvqlId)
-        {           
-            var hopDongs = _db.HopDongs.Where(s => s.School.DVQLId == dvqlId && s.NgayHieuLucHD.Value.Year == DateTime.Now.Year).Select(s => s.School).ToList();
+        {
+            DateTime dateTimeCompare = DateTime.Now.AddYears(-1);
+            
+            var hopDongDaGiaHan = _db.HopDongs.Where(s => s.School.DVQLId == dvqlId && s.NgayHieuLucHD > dateTimeCompare).Select(s => s.School).ToList();
+            var listSchoolIdChuaCanGiaHan = new List<int>();
+            foreach (var item in hopDongDaGiaHan)
+            {
+                listSchoolIdChuaCanGiaHan.Add(item.Id);
+            }
+            var hopDongs = _db.HopDongs.Where(s => s.School.DVQLId == dvqlId && s.NgayHieuLucHD < dateTimeCompare).Select(s => s.School).ToList();
             var listSchooId = new List<int>();
             foreach (var item in hopDongs)
             {
                 listSchooId.Add(item.Id);
             }
-            List<School> SchoolChuaGiaHan = _db.Schools.Include("CapTruong").Where(s => s.DVQLId == dvqlId && s.IsDaTaoMoi == true).Where(s => !listSchooId.Contains(s.Id)).ToList();
+            var schoolHetHan = new List<int>();
+            foreach (var item in listSchooId)
+            {
+                if (!listSchoolIdChuaCanGiaHan.Contains(item))
+                {
+                    schoolHetHan.Add(item);
+                }
+            }
+            List<School> SchoolChuaGiaHan = _db.Schools.Include("CapTruong").Where(s => s.DVQLId == dvqlId && s.IsDaTaoMoi == true).Where(s => schoolHetHan.Contains(s.Id)).ToList();
             return SchoolChuaGiaHan;
         }
 
@@ -99,13 +115,30 @@ namespace CongThongTinDienTu.Repositories.Implements
 
         public int GetSoLuongChuaGiaHan(int? dvqlId)
         {
-            var hopDongs = _db.HopDongs.AsNoTracking().Where(s => s.School.DVQLId == dvqlId && s.NgayHieuLucHD.Value.Year == DateTime.Now.Year).Select(s => s.School).ToList();
+
+            DateTime dateTimeCompare = DateTime.Now.AddYears(-1);
+
+            var hopDongDaGiaHan = _db.HopDongs.Where(s => s.School.DVQLId == dvqlId && s.NgayHieuLucHD > dateTimeCompare).Select(s => s.School).ToList();
+            var listSchoolIdChuaCanGiaHan = new List<int>();
+            foreach (var item in hopDongDaGiaHan)
+            {
+                listSchoolIdChuaCanGiaHan.Add(item.Id);
+            }
+            var hopDongs = _db.HopDongs.Where(s => s.School.DVQLId == dvqlId && s.NgayHieuLucHD < dateTimeCompare).Select(s => s.School).ToList();
             var listSchooId = new List<int>();
             foreach (var item in hopDongs)
             {
                 listSchooId.Add(item.Id);
             }
-            int count = _db.Schools.Where(s => s.DVQLId == dvqlId && s.IsDaTaoMoi == true).Where(s => !listSchooId.Contains(s.Id)).Count();
+            var schoolHetHan = new List<int>();
+            foreach (var item in listSchooId)
+            {
+                if (!listSchoolIdChuaCanGiaHan.Contains(item))
+                {
+                    schoolHetHan.Add(item);
+                }
+            }
+            int count = _db.Schools.Where(s => s.DVQLId == dvqlId && s.IsDaTaoMoi == true).Where(s => schoolHetHan.Contains(s.Id)).Count();
             return count;
         }
 

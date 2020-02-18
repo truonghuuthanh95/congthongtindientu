@@ -28,10 +28,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2018 19:15:06</publishTime>
     </File>
     <File Include="bin/CongThongTinDienTu.dll">
-      <publishTime>08/01/2019 13:46:07</publishTime>
+      <publishTime>10/29/2019 08:41:32</publishTime>
     </File>
     <File Include="bin/CongThongTinDienTu.pdb">
-      <publishTime>08/01/2019 13:46:07</publishTime>
+      <publishTime>10/29/2019 08:41:32</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>01/04/2017 00:44:16</publishTime>
@@ -487,7 +487,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2019 14:35:35</publishTime>
     </File>
     <File Include="Views/ManagementUnit/Index.cshtml">
-      <publishTime>06/22/2019 20:53:01</publishTime>
+      <publishTime>08/01/2019 15:09:38</publishTime>
     </File>
     <File Include="Views/Manager/DanhSachHopDongTheoNam.cshtml">
       <publishTime>03/07/2019 14:26:24</publishTime>
