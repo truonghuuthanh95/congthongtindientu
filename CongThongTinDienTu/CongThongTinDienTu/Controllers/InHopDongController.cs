@@ -54,6 +54,11 @@ namespace CongThongTinDienTu.Controllers
             {
                 return RedirectToRoute("kiemtramatruong");
             }
+            HopDong hopDong = hopDongRepository.GetLastestHopDongBySchoolId(school.Id);
+            //hopDong.NgayHieuLucHD.Value.AddYears(1);
+            
+                 
+            ViewBag.LastestHopDong = hopDong;
             return View(school);
         }
 

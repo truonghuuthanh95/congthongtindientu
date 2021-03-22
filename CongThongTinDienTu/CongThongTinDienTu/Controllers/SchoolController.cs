@@ -62,7 +62,13 @@ namespace CongThongTinDienTu.Controllers
         {
 
             List<School> schools = schoolRepository.GetSchoolsByDistrictAndCapHoc(districtId, captruongId);
-            var schoolJson = JsonConvert.SerializeObject(schools,
+            List<SChoolInfoDTO> sChoolInfoDTOs = new List<SChoolInfoDTO>();
+
+            foreach (var item in schools)
+            {
+                sChoolInfoDTOs.Add(new SChoolInfoDTO(item.Id, item.MaTruong, item.TenTruong));
+            }
+            var schoolJson = JsonConvert.SerializeObject(sChoolInfoDTOs,
             Formatting.None,
             new JsonSerializerSettings()
             {
@@ -98,6 +104,25 @@ namespace CongThongTinDienTu.Controllers
                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             });
             return Json(new ReturnFormat(200, "success", schoolJson), JsonRequestBehavior.AllowGet);
+        }
+        [Route("getLastestHopDongByMaQI/{qIMaTruong}")]
+        [HttpGet]
+        public ActionResult GetTrangThaiHopDongByMaQI(string qIMaTruong)
+        {
+            School school = schoolRepository.GetSchoolByQIMaTruong(qIMaTruong.Trim());
+            if (school == null)
+            {
+                return Json(new ReturnFormat(404, "mã trường không tồn tại", null), JsonRequestBehavior.AllowGet);
+            }
+            HopDong hopDong = hopDongRepository.GetLastestHopDongBySchoolId(school.Id);
+            var hopDongJson = JsonConvert.SerializeObject(hopDong,
+            Formatting.None,
+            new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            });
+
+            return Json(new ReturnFormat(200, "success", hopDongJson), JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -95,7 +95,7 @@
                             <th>Số Tiền</th>
                             <th>Ngày Đóng</th>
                             <th>Số năm</th>
-                            
+                            <th>Ghi Chú</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -147,7 +147,7 @@
                             + (hopdong.HopDongs[i].IsTaoMoi == true ? 'Tạo mới' : 'Duy trì') + '</td><td>'
                             + hopdong.HopDongs[i].SoTien + '</td><td>'
                             + (hopdong.HopDongs[i].NgayThanhToan != null ? (new Date(hopdong.HopDongs[i].NgayThanhToan).getDate() + '/' + (new Date(hopdong.HopDongs[i].NgayThanhToan).getMonth() + 1) + '/' + new Date(hopdong.HopDongs[i].NgayThanhToan).getFullYear()) : 'Chưa thanh toán') + '</td><td>'
-                            + hopdong.HopDongs[i].SoNam +' năm</td></tr>');
+                            + hopdong.HopDongs[i].SoNam + 'năm</td><td>' + hopdong.HopDongs[i].GhiChu + '</td></tr>');
                     }
                 }
                 else {

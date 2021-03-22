@@ -67,6 +67,7 @@
                     <th>Số năm</th>
                     <th>Số Tiền</th>
                     <th>Ngày Đóng</th>
+                    <th>Ghi Chú</th>
                     <th></th>
                 </tr>
             </thead>
@@ -119,6 +120,7 @@
                                     <td></td>
                                 }
                             }
+                            <td>@item.GhiChu</td>
                             <td><button class="btn btn-sm btn-primary" onclick="setIdToIdHopDong(@item.Id);" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-edit"></span></button></td>
                         </tr>
                     }
@@ -170,6 +172,25 @@
                             <option value="false">Chuyển khoản</option>
                             <option value="no">Không chọn</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Số năm</label>
+                        <select class="form-control" id="sonam">
+                            <option value="1">1 năm</option>
+                            <option value="2">2 năm</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Loại hợp đồng</label>
+                        <select class="form-control" id="loaihopdong">
+                            <option value="true">Tạo lập</option>
+                            <option value="false">Duy trì</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Ghi chú</label>
+                        <input type="text" class="form-control" id="ghichu" value="">
+
                     </div>
                 </form>
             </div>
@@ -229,7 +250,20 @@ function setIdToIdHopDong(id) {
             $('#hinhthucthanhtoan').val('no');
         }
         $('#ngaykihd').datepicker('setDate', moment(hopdong.NgayKiHD).format('DD-MM-YYYY'));
-        $('#ngayhieuluc').datepicker('setDate', moment(hopdong.NgayHieuLucHD).format('DD-MM-YYYY'));       
+        $('#ngayhieuluc').datepicker('setDate', moment(hopdong.NgayHieuLucHD).format('DD-MM-YYYY'));
+        $('#ghichu').val(hopdong.GhiChu)
+        if (hopdong.IsTaoMoi) {
+            $('#loaihopdong').val('true');
+        }
+        else {
+            $('#loaihopdong').val('false');
+        }
+        if (hopdong.SoNam == 1) {
+            $('#sonam').val('1');
+        }
+        else {
+            $('#sonam').val('2');
+        }
     });
 }
 function capNhatNgayDongTien() {
@@ -242,7 +276,10 @@ function capNhatNgayDongTien() {
             ngayDongTien: $('#ngaydong').val() == '' ? null : $('#ngaydong').val(),
             httt: $('#hinhthucthanhtoan').val(),
             ngayKiHD: $('#ngaykihd').val(),
-            ngayHieuLuc: $('#ngayhieuluc').val()
+            ngayHieuLuc: $('#ngayhieuluc').val(),
+            soNam: parseInt($('#sonam').val()),
+            loaiHopDong: $('#loaihopdong').val() == 'true' ? true : false,
+            ghiChu: $('#ghichu').val()
         }, function (data, status) {
             if (data.StatusCode == 200) {
                 window.location.reload();

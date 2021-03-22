@@ -51,6 +51,8 @@ namespace CongThongTinDienTu.Models.DAO
         [StringLength(50)]
         public string HieuTruong { get; set; }
 
+        [StringLength(50)]
+        public string QIMaTruong { get; set; }
         public virtual CapTruong CapTruong { get; set; }
 
         public virtual DVQL DVQL { get; set; }

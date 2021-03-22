@@ -30,6 +30,12 @@ namespace CongThongTinDienTu.Repositories.Implements
             return school;
         }
 
+        public School GetSchoolByQIMaTruong(string qIMaTruong)
+        {
+            School school = _db.Schools.Include("Ward.District").Where(s => s.QIMaTruong == qIMaTruong).SingleOrDefault();
+            return school;
+        }
+
         public List<School> GetSchoolsByDistrictAndCapHoc(int districtId, int caphoc)
         {
             List<School> schools = _db.Schools.Where(s => s.Ward.DistrictID == districtId).Where(s => s.CapTruongId == caphoc).ToList();
@@ -39,6 +45,13 @@ namespace CongThongTinDienTu.Repositories.Implements
         public List<School> GetSchoolsByDistrictAndCapHocWithIsDaTaoLapFalse(int districtId, int caphoc)
         {
             List<School> schools = _db.Schools.Where(s => s.Ward.DistrictID == districtId).Where(s => s.CapTruongId == caphoc).Where(s => s.IsDaTaoMoi == false || s.IsDaTaoMoi == null).ToList();
+            return schools;
+        }
+
+        public List<School> GetSchoolsByDistrictAndCapHocWithLessDetail(int districtId, int caphoc)
+        {
+            List<School> schools = _db.Schools.Where(s => s.Ward.DistrictID == districtId).Where(s => s.CapTruongId == caphoc).ToList();
+
             return schools;
         }
 

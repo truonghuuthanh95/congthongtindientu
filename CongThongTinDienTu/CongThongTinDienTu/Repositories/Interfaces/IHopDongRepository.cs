@@ -23,5 +23,6 @@ namespace CongThongTinDienTu.Repositories.Interfaces
         List<HopDong> GetSchoolsChuaDongTien(int? dvqlId);
         int GetSoLuongChuaThanhToan(int? dvqlId);
         int GetSoLuongChuaGiaHan(int? dvqlId);
+        HopDong GetLastestHopDongBySchoolId(int schoolId);
     }
 }

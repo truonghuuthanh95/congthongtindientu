@@ -14,6 +14,7 @@ namespace CongThongTinDienTu.Repositories.Interfaces
         School GetSchoolById(int? id);
         List<School> GetSchoolsByDistrictAndCapHoc(int districtId , int caphoc);
         List<School> GetSchoolsByDistrictAndCapHocWithIsDaTaoLapFalse(int districtId, int caphoc);
-       
+        School GetSchoolByQIMaTruong(string qIMaTruong);
+        List<School> GetSchoolsByDistrictAndCapHocWithLessDetail(int districtId, int caphoc);
     }
 }

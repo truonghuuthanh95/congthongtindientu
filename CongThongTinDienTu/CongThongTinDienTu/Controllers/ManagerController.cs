@@ -1,5 +1,6 @@
 ﻿using CongThongTinDienTu.Models.DAO;
 using CongThongTinDienTu.Models.DTO;
+
 using CongThongTinDienTu.Repositories.Implements;
 using CongThongTinDienTu.Repositories.Interfaces;
 using CongThongTinDienTu.Utils;
@@ -30,7 +31,6 @@ namespace CongThongTinDienTu.Controllers
             this.districtRepository = districtRepository;
             this.accountPermissionRepository = accountPermissionRepository;
         }
-
 
 
         // GET: Manager
@@ -215,7 +215,7 @@ namespace CongThongTinDienTu.Controllers
         }
         [Route("capnhathopdong")]
         [HttpPost]
-        public ActionResult CapNhatNgayDongTien(int id, string ngayDongTien, string httt, string ngayKiHD, string ngayHieuLuc)
+        public ActionResult CapNhatNgayDongTien(int id, string ngayDongTien, string httt, string ngayKiHD, string ngayHieuLuc, bool loaiHopDong, int soNam, string ghiChu)
         {
             Account account = (Account)Session[CommonConstant.USER_SESSION];
             if (account == null)
@@ -251,7 +251,26 @@ namespace CongThongTinDienTu.Controllers
             {
                 hopDong.NgayThanhToan = null;
             }
-            
+            hopDong.IsTaoMoi = loaiHopDong;
+            hopDong.SoNam = soNam;
+            hopDong.GhiChu = ghiChu;
+            School school = schoolRepository.GetSchoolById(hopDong.SchoolId);
+            if (loaiHopDong)
+            {
+                if (school.Ward.District.Type.Trim() == "Huyện")
+                {
+                    hopDong.SoTien = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["TienHuyenTL"]) * soNam;
+                }
+                else
+                {
+                    hopDong.SoTien = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["TienQuanTL"]) * soNam;
+                }
+            }
+            else
+            {
+                hopDong.SoTien = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["TienDuyTry"]) * soNam;
+            }         
+
             hopDong.NgayHieuLucHD = DateTime.ParseExact(ngayHieuLuc, "dd-MM-yyyy", null);
             hopDong.NgayKiHD = DateTime.ParseExact(ngayKiHD, "dd-MM-yyyy", null);
             HopDong hopDongDaCapNhat = hopDongRepository.CapNhatHopDong(hopDong);

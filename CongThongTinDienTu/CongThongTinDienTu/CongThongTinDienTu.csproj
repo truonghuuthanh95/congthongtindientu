@@ -210,6 +210,7 @@
     <Compile Include="Models\DTO\KiemTraTruongDTO.cs" />
     <Compile Include="Models\DTO\ReturnFormat.cs" />
     <Compile Include="Models\DTO\SchoolDTO.cs" />
+    <Compile Include="Models\DTO\SChoolInfoDTO.cs" />
     <Compile Include="Models\DTO\ThongTinTruongOneViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Implements\AccountPermissionRepository.cs" />

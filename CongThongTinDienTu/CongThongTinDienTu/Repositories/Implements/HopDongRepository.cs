@@ -42,6 +42,8 @@ namespace CongThongTinDienTu.Repositories.Implements
             return hopDong;
         }
 
+       
+
         public List<HopDong> GetHopDongsBySchoolId(int schoolId)
         {
             List<HopDong> hopDongs = _db.HopDongs.AsNoTracking().Where(s => s.SchoolId == schoolId).OrderByDescending(s => s.NgayKiHD).ToList();
@@ -54,6 +56,12 @@ namespace CongThongTinDienTu.Repositories.Implements
             return hopDongs;
         }
 
+        public HopDong GetLastestHopDongBySchoolId(int schoolId)
+        {
+            HopDong hopDong = _db.HopDongs.AsNoTracking().Include("School").Where(s => s.SchoolId == schoolId).OrderByDescending(s => s.Id).FirstOrDefault();
+            return hopDong;
+        }
+
         public int GetMaxSoHopDong(int year)
         {
             var max = _db.HopDongs.AsNoTracking().Where(s => s.NgayHieuLucHD.Value.Year == year).Max(s => s.MaHopDong);
@@ -63,6 +71,8 @@ namespace CongThongTinDienTu.Repositories.Implements
             }
             return Convert.ToInt32(max);
         }
+
+        
 
         public List<School> GetSchoolsChuaCoCongThongTin(int? dvqlId)
         {
