@@ -91,9 +91,10 @@ namespace CongThongTinDienTu.Repositories.Implements
 
         public List<School> GetSchoolsChuaGiaHan(int? dvqlId)
         {
-            DateTime dateTimeCompare = DateTime.Now.AddYears(-1);
+            DateTime dateTimeCompare = DateTime.Now;
             
-            var hopDongDaGiaHan = _db.HopDongs.Where(s => s.School.DVQLId == dvqlId && s.NgayHieuLucHD > dateTimeCompare).Select(s => s.School).ToList();
+            var hopDongDaGiaHan = _db.HopDongs.Where(s => s.School.DVQLId == dvqlId && s.NgayHieuLucHD.Value.AddYears((int)(s.SoNam)) > dateTimeCompare).Select(s => s.School).ToList();
+            
             var listSchoolIdChuaCanGiaHan = new List<int>();
             foreach (var item in hopDongDaGiaHan)
             {
